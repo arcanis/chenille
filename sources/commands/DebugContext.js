@@ -7,7 +7,7 @@ class DebugContext extends Command {
     async execute() {
         const eventFile = getEventFile();
 
-        this.stdout.write(inspect(eventFile, {
+        this.context.stdout.write(inspect(eventFile, {
             depth: Infinity,
         }) + `\n`);
     }
