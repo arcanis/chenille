@@ -1,0 +1,6 @@
+name: Chenille Merge Queue
+description: Wait for the CI to be green before merging into master
+author: Maël Nison <nison.mael@gmail.com>
+runs:
+  using: node12
+  main: sources/github/actionEntry.js
