@@ -10,7 +10,7 @@ exports.removeFromMergeQueue = async (git, removedPr) => {
 
   const {hash} = prs[killPoint];
 
-  await git(`checkout`, `-b`, `temp/merge-queue`);
+  await git(`checkout`, `-b`, `temp/merge-queue`, `merge-queue`);
   await git(`reset`, `--hard`, `${hash}^1`);
 
   for (const pr of prs.slice(killPoint + 1)) {

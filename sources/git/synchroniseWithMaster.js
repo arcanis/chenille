@@ -9,7 +9,7 @@ exports.synchroniseWithMaster = async git => {
 
   const prs = await getAllQueuedPullRequests(git);
 
-  await git(`checkout`, `-b`, `temp/merge-queue`);
+  await git(`checkout`, `-b`, `temp/merge-queue`, `merge-queue`);
   await git(`reset`, `--hard`, `master`);
 
   for (const pr of prs) {

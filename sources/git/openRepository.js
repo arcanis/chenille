@@ -1,10 +1,13 @@
 const {npath, ppath, xfs} = require(`@yarnpkg/fslib`);
+const chalk = require(`chalk`);
 const cp = require(`child_process`);
 
 exports.openRepository = async (dir, {stdout}) => {
   const nDir = npath.fromPortablePath(dir);
 
   const git = async (...args) => {
+    stdout.write(`${chalk.grey(`$ git ${args.join(` `)}`)}\n`);
+
     const result = cp.execFileSync(`git`, args, {
       cwd: nDir,
       encoding: `utf8`,
@@ -26,7 +29,7 @@ exports.openRepository = async (dir, {stdout}) => {
     await xfs.writeFilePromise(squashMessagePath, `${prefix}${squashMessage}`);
   };
 
-  await git(`checkout`, `--detach`);
+  await git(`checkout`, `master`);
 
   try {
     await git(`checkout`, `merge-queue`);
