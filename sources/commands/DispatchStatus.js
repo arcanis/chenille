@@ -11,7 +11,9 @@ const {validateStatusMap} = require(`../validateStatusMap`);
 
 class DispatchStatus extends Command {
   async execute() {
-    const git = await openRepository(npath.toPortablePath(this.cwd));
+    const git = await openRepository(npath.toPortablePath(this.cwd), {
+      stdout: this.context.stdout,
+    });
 
     const prs = await getAllQueuedPullRequests(git);
     const prsWithStatus = await this.context.driver.fetchCommitStatus(git, prs);

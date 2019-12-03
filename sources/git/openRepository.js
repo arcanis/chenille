@@ -1,7 +1,7 @@
 const {npath, ppath, xfs} = require(`@yarnpkg/fslib`);
 const cp = require(`child_process`);
 
-exports.openRepository = async dir => {
+exports.openRepository = async (dir, {stdout}) => {
   const nDir = npath.fromPortablePath(dir);
 
   const git = async (...args) => {
@@ -26,8 +26,20 @@ exports.openRepository = async dir => {
     await xfs.writeFilePromise(squashMessagePath, `${prefix}${squashMessage}`);
   };
 
-  await git(`checkout`, `merge-queue`);
-  await git(`checkout`, `master`);
- 
+  await git(`checkout`, `--detach`);
+
+  try {
+    await git(`checkout`, `merge-queue`);
+  } catch {
+    await git(`checkout`, `merge-queue`, `master`);
+    await git(`branch`, `-u`, `origin/merge-queue`);
+  }
+
+  const masterHash = await git(`rev-parse`, `master`);
+  stdout.write(`${masterHash} Branch: master\n`);
+
+  const mergeQueueHash = await git(`rev-parse`, `merge-queue`);
+  stdout.write(`${mergeQueueHash} Branch: merge-queue\n`);
+
   return git;
 };
