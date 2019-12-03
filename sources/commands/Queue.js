@@ -39,4 +39,4 @@ Queue.addOption(`cwd`, Command.String(`--cwd`));
 Queue.addOption(`title`, Command.String(`--title`));
 Queue.addOption(`pr`, Command.String());
 
-module.exports = DispatchPushToPr;
+module.exports = Queue;
