@@ -2,8 +2,6 @@ const {Cli} = require(`clipanion`);
 
 const cli = new Cli({binaryName: `yarn chenille`});
 
-cli.register(require(`./commands/DebugContext`));
-
 cli.register(require(`./commands/DispatchComment`));
 cli.register(require(`./commands/DispatchStatus`));
 
