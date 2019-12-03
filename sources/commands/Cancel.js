@@ -9,10 +9,10 @@ class Cancel extends Command {
   async execute() {
     const git = openRepository(npath.toPortablePath(this.cwd));
 
-    this.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
+    this.context.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
     await removeFromMergeQueue(git, this.pr);
 
-    this.stdout.write(`Done - pushing the changes!\n`);
+    this.context.stdout.write(`Done - pushing the changes!\n`);
     await git(`push`, `merge-queue`, `origin:merge-queue`);
   }
 }

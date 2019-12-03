@@ -9,10 +9,10 @@ class Resync extends Command {
   async execute() {
     const git = openRepository(npath.toPortablePath(this.cwd));
 
-    this.stdout.write(`Syncing against master...\n`);
+    this.context.stdout.write(`Syncing against master...\n`);
     await synchroniseWithMaster(git);
 
-    this.stdout.write(`Done - pushing the changes!\n`);
+    this.context.stdout.write(`Done - pushing the changes!\n`);
     await git(`push`, `origin`, `merge-queue`);
   }
 }

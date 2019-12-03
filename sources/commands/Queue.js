@@ -13,16 +13,16 @@ class Queue extends Command {
     const remote = `pull/${this.pr}/head`;
     const local = `pr-${this.pr}`;
 
-    this.stdout.write(`Fetching the head for ${remote}...\n`);
+    this.context.stdout.write(`Fetching the head for ${remote}...\n`);
     await git(`fetch`, `origin`, `${remote}:${local}`);
 
-    this.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
+    this.context.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
     await removeFromMergeQueue(git, this.pr);
 
-    this.stdout.write(`Squashing ${this.pr} into the merge queue (${await git(`rev-parse`, `--short`, local)})...\n`);
+    this.context.stdout.write(`Squashing ${this.pr} into the merge queue (${await git(`rev-parse`, `--short`, local)})...\n`);
     await sendToMergeQueue(git, {number: this.pr, title: this.number}, local);
 
-    this.stdout.write(`Done - pushing the changes!\n`);
+    this.context.stdout.write(`Done - pushing the changes!\n`);
     await git(`push`, `merge-queue`, `origin:merge-queue`);
   }
 }
