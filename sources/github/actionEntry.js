@@ -1,5 +1,5 @@
 // To be able to require our dependencies
-require(`../../.pnp.js`);
+require(`../../.pnp.js`).setup();
 
 const cli = require(`../cli`);
 
