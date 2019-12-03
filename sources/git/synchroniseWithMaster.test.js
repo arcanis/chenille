@@ -19,10 +19,15 @@ describe(`synchroniseWithMaster`, () => {
     `should reset the hashes when master is ahead`,
     makeTemporaryEnv(`outdated-master`, async ({path, git}) => {
       const before = await getAllQueuedPullRequests(git);
+      await git(`checkout`, `master`);
+      await git(`commit`, `-m`, `Reset master`, `--allow-empty`);
       await synchroniseWithMaster(git);
       const after = await getAllQueuedPullRequests(git);
 
-      expect(after).not.toEqual(before);
+      expect(after).toEqual(before.map(({hash, ...fields}) => ({
+        ...fields,
+        hash: expect.not.stringMatching(hash),
+      })));
     }),
   );
 

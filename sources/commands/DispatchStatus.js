@@ -6,23 +6,35 @@ const {openRepository} = require(`../git/openRepository`);
 const {removeFromMergeQueue} = require(`../git/removeFromMergeQueue`);
 const {setBranchToCommit} = require(`../git/setBranchToCommit`)
 
+const {normalizeStatusMap} = require(`../normalizeStatusMap`);
+const {validateStatusMap} = require(`../validateStatusMap`);
+
 class DispatchStatus extends Command {
   async execute() {
     const git = openRepository(npath.toPortablePath(this.cwd));
     const fetchCommitStatus = require(this.driver).fetchCommitStatus;
 
-    const commits = await getAllQueuedPullRequests(git);
-    const status = await fetchCommitStatus(commits);
+    const prs = await getAllQueuedPullRequests(git);
+    const prsWithStatus = await fetchCommitStatus(git, prs);
+
+    for (const pr of prsWithStatus) {
+      pr.statusMap = await normalizeStatusMap(git, pr.statusMap);
+      pr.status = validateStatusMap(pr.statusMap);
+    }
 
     let okCount = 0;
-    while (okCount < status.length && status[okCount].status === 1)
+    while (okCount < prsWithStatus.length && prsWithStatus[okCount].status === true)
       okCount += 1;
 
-    if (okCount > 0)
-      await setBranchToCommit(git, `master`, status[okCount - 1].hash);
+    if (okCount > 0) {
+      this.context.stdout.write(`Synchronizing master to ${prsWithStatus[okCount - 1].number}`);
+      await setBranchToCommit(git, `master`, prsWithStatus[okCount - 1].hash);
+    }
 
-    if (okCount < status.length && status[okCount].status === -1)
-      await removeFromMergeQueue(git, status[okCount].number);
+    if (okCount < prsWithStatus.length && prsWithStatus[okCount].status === -1) {
+      this.context.stdout.write(`Removing ${prsWithStatus[okCount].number}`);
+      await removeFromMergeQueue(git, prsWithStatus[okCount].number);
+    }
 
     this.context.stdout.write(`Done - pushing the changes!\n`);
     await git(`push`, `origin`, `--force-with-lease`, `merge-queue`, `master`);

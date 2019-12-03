@@ -14,9 +14,9 @@ cli.register(require(`./commands/Resync`));
 module.exports = cli;
 
 if (process.mainModule === module) {
-    cli.runExit(process.argv.slice(2), {
-        stdin: process.stdin,
-        stdout: process.stdout,
-        stderr: process.stderr,
-    });
+  cli.runExit(process.argv.slice(2), {
+    stdin: process.stdin,
+    stdout: process.stdout,
+    stderr: process.stderr,
+  });
 }

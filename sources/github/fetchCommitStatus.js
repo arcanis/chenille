@@ -1,14 +1,15 @@
 const got = require(`got`);
 
-exports.fetchCommitStatus = (prs) => {
+exports.fetchCommitStatus = async (git, prs) => {
   const [owner, name] = process.env.GITHUB_REPOSITORY.split(/\//);
 
-  await got.post(`https://api.github.com/graphql`, {
+  const {body: {data}} = await got.post(`https://api.github.com/graphql`, {
+    json: true,
     headers: {
       Accept: `application/vnd.github.antiope-preview`,
-      Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
+      Authorization: `bearer 40b425142f22c576cf7142dd21aa0abd180b56cb`,
     },
-    json: {
+    body: {
       query: `query {
         rateLimit {
           cost
@@ -17,10 +18,25 @@ exports.fetchCommitStatus = (prs) => {
         repository(owner: "${owner}", name: "${name}") {
           ${prs.map(({hash}) => `
             hash_${hash}: object(oid: "${hash}") {
-              checkSuites(first: 3) {
-                nodes {
-                  app {
-                    name
+              ...on Commit {
+                status {
+                  contexts {
+                    context
+                    state
+                  }
+                }
+                checkSuites(first: 100) {
+                  nodes {
+                    app {
+                      name
+                    }
+                    checkRuns(first: 100) {
+                      nodes {
+                        name
+                        status
+                        conclusion
+                      }
+                    }
                   }
                 }
               }
@@ -29,5 +45,45 @@ exports.fetchCommitStatus = (prs) => {
         }
       }`,
     }
+  });
+
+  const getStatusMapFor = hash => {
+    const entry = data.repository[`hash_${hash}`];
+    const statusMap = new Map();
+
+    for (const {context, state} of entry.status.contexts) {
+      switch (state) {
+        case `SUCCESS`: {
+          statusMap.set(context, true);
+        } break;
+
+        case `FAILURE`:
+        case `ERROR`: {
+          statusMap.set(context, false);
+        } break;
+
+        default: {
+          statusMap.set(context, false);
+        } break;
+      }
+    }
+
+    for (const checkSuite of entry.checkSuites.nodes) {
+      for (const checkRun of checkSuite.checkRuns.nodes) {
+        const name = `${checkSuite.app.name} / ${checkRun.name}`;
+
+        if (checkRun.status === `COMPLETED`) {
+          statusMap.set(name, checkRun.conclusion === `SUCCESS`);
+        } else {
+          statusMap.set(name, null);
+        }
+      }
+    }
+
+    return statusMap;
+  };
+  
+  return prs.map(pr => {
+    return {...pr, statusMap: getStatusMapFor(pr.hash)};
   });
 };
