@@ -7,7 +7,7 @@ exports.fetchCommitStatus = async (git, prs) => {
     json: true,
     headers: {
       Accept: `application/vnd.github.antiope-preview`,
-      Authorization: `bearer 40b425142f22c576cf7142dd21aa0abd180b56cb`,
+      Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
     },
     body: {
       query: `query {
