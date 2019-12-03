@@ -17,7 +17,8 @@ const context = {
 switch (process.env.GITHUB_EVENT_NAME) {
   case `issue_comment`: {
     if (eventFile.action === `created` && eventFile.issue.pull_request && eventFile.issue.state === `open`) {
-      cli.runExit([`dispatch`, `comment`, `to`, eventFile.issue.number, `--cwd=${process.env.GITHUB_WORKSPACE}`, `--title=${eventFile.issue.title}`, `--body=${eventFile.issue.body}`], context);
+      console.log(eventFile)
+      cli.runExit([`dispatch`, `comment`, `to`, eventFile.issue.number, `--cwd=${process.env.GITHUB_WORKSPACE}`, `--title=${eventFile.issue.title}`, `--body=${eventFile.comment.body}`], context);
     }
   } break;
 
