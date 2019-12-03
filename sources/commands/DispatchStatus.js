@@ -46,7 +46,7 @@ DispatchStatus.schema = yup.object().shape({
   driver: yup.string().required(),
 });
 
-DispatchStatus.addPath(`cancel`);
+DispatchStatus.addPath(`dispatch`, `status`);
 
 DispatchStatus.addOption(`cwd`, Command.String(`--cwd`));
 DispatchStatus.addOption(`driver`, Command.String(`--driver`));

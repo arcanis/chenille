@@ -21,7 +21,7 @@ Resync.schema = yup.object().shape({
   cwd: yup.string().required(),
 });
 
-Resync.addPath(`cancel`);
+Resync.addPath(`resync`);
 
 Resync.addOption(`cwd`, Command.String(`--cwd`));
 
