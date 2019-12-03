@@ -1,3 +1,6 @@
+// To be able to require our dependencies
+require(`../../.pnp.js`);
+
 const cli = require(`../cli`);
 
 const {getEventFile} = require(`./getEventFile`);
