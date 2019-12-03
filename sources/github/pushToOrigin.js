@@ -1,3 +1,6 @@
 exports.pushToOrigin = async (git, ...args) => {
-  await git(`-c`, `http.extraheader=Authorization: token ${process.env.GITHUB_TOKEN}`, `push`, `origin`, ...args);
+  const basicAuthToken = Buffer.from(`git:${process.env.GITHUB_TOKEN}`).toString(`base64`);
+  const authHeader = `Authorization: basic ${basicAuthToken}`;
+
+  await git(`-c`, `http.extraheader=${authHeader}`, `push`, `origin`, ...args);
 };
