@@ -12,10 +12,9 @@ const {validateStatusMap} = require(`../validateStatusMap`);
 class DispatchStatus extends Command {
   async execute() {
     const git = await openRepository(npath.toPortablePath(this.cwd));
-    const fetchCommitStatus = require(this.driver).fetchCommitStatus;
 
     const prs = await getAllQueuedPullRequests(git);
-    const prsWithStatus = await fetchCommitStatus(git, prs);
+    const prsWithStatus = await this.context.driver.fetchCommitStatus(git, prs);
 
     for (const pr of prsWithStatus) {
       pr.statusMap = await normalizeStatusMap(git, pr.statusMap);
@@ -37,18 +36,16 @@ class DispatchStatus extends Command {
     }
 
     this.context.stdout.write(`Done - pushing the changes!\n`);
-    await git(`push`, `origin`, `--force-with-lease`, `merge-queue`, `master`);
+    await this.context.driver.pushToOrigin(git, `--force-with-lease`, `master`, `merge-queue`);
   }
 }
 
 DispatchStatus.schema = yup.object().shape({
   cwd: yup.string().required(),
-  driver: yup.string().required(),
 });
 
 DispatchStatus.addPath(`dispatch`, `status`);
 
 DispatchStatus.addOption(`cwd`, Command.String(`--cwd`));
-DispatchStatus.addOption(`driver`, Command.String(`--driver`));
 
 module.exports = DispatchStatus;

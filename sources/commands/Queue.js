@@ -23,7 +23,7 @@ class Queue extends Command {
     await sendToMergeQueue(git, {number: this.pr, title: this.number}, local);
 
     this.context.stdout.write(`Done - pushing the changes!\n`);
-    await git(`push`, `merge-queue`, `origin:merge-queue`);
+    await this.context.driver.pushToOrigin(`--force-with-lease`, `merge-queue`);
   }
 }
 

@@ -8,6 +8,7 @@ const {getEventFile} = require(`./getEventFile`);
 const eventFile = getEventFile();
 
 const context = {
+  driver: require(`./driver`),
   stdin: process.stdin,
   stdout: process.stdout,
   stderr: process.stderr,
@@ -33,6 +34,6 @@ switch (process.env.GITHUB_EVENT_NAME) {
   } break;
 
   case `status`: {
-    cli.runExit([`dispatch`, `status`, `--driver=${require.resolve(`./fetchCommitStatus`)}`], context);
+    cli.runExit([`dispatch`, `status`], context);
   } break;
 }

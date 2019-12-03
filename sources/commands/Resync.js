@@ -13,7 +13,7 @@ class Resync extends Command {
     await synchroniseWithMaster(git);
 
     this.context.stdout.write(`Done - pushing the changes!\n`);
-    await git(`push`, `origin`, `merge-queue`);
+    await this.context.driver.pushToOrigin(git, `--force-with-lease`, `merge-queue`);
   }
 }
 
