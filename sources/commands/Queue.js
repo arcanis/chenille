@@ -16,7 +16,7 @@ class Queue extends Command {
     const local = `pr-${this.pr}`;
 
     this.context.stdout.write(`Fetching the head for ${remote}...\n`);
-    await this.context.driver.fetchFromOrigin(`${remote}:${local}`);
+    await this.context.driver.fetchFromOrigin(git, `${remote}:${local}`);
 
     this.context.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
     await removeFromMergeQueue(git, this.pr);
