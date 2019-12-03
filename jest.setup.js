@@ -11,7 +11,7 @@ global.makeTemporaryEnv = (fixture, cb) => {
     execFileSync(`bash`, [nScriptPath], {cwd: nRepoPath, stdio: `pipe`});
 
     const {openRepository} = require(`./sources/git/openRepository`);
-    const git = openRepository(path);
+    const git = await openRepository(path);
 
     await cb({path, git});
   };

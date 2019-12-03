@@ -1,7 +1,7 @@
 const {npath, ppath, xfs} = require(`@yarnpkg/fslib`);
 const cp = require(`child_process`);
 
-exports.openRepository = dir => {
+exports.openRepository = async dir => {
   const nDir = npath.fromPortablePath(dir);
 
   const git = async (...args) => {

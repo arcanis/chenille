@@ -7,7 +7,7 @@ const {removeFromMergeQueue} = require(`../git/removeFromMergeQueue`);
 
 class Cancel extends Command {
   async execute() {
-    const git = openRepository(npath.toPortablePath(this.cwd));
+    const git = await openRepository(npath.toPortablePath(this.cwd));
 
     this.context.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
     await removeFromMergeQueue(git, this.pr);

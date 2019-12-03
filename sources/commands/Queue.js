@@ -8,7 +8,7 @@ const {sendToMergeQueue} = require(`../git/sendToMergeQueue`);
 
 class Queue extends Command {
   async execute() {
-    const git = openRepository(npath.toPortablePath(this.cwd));
+    const git = await openRepository(npath.toPortablePath(this.cwd));
 
     const remote = `pull/${this.pr}/head`;
     const local = `pr-${this.pr}`;

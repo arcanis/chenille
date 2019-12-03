@@ -7,7 +7,7 @@ const {synchroniseWithMaster} = require(`../git/synchroniseWithMaster`);
 
 class Resync extends Command {
   async execute() {
-    const git = openRepository(npath.toPortablePath(this.cwd));
+    const git = await openRepository(npath.toPortablePath(this.cwd));
 
     this.context.stdout.write(`Syncing against master...\n`);
     await synchroniseWithMaster(git);
