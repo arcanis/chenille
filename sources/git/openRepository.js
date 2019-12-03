@@ -2,6 +2,8 @@ const {npath, ppath, xfs} = require(`@yarnpkg/fslib`);
 const chalk = require(`chalk`);
 const cp = require(`child_process`);
 
+const {getConfiguration} = require(`../getConfiguration`);
+
 exports.openRepository = async (dir, {stdout}) => {
   const nDir = npath.fromPortablePath(dir);
 
@@ -43,6 +45,11 @@ exports.openRepository = async (dir, {stdout}) => {
 
   const mergeQueueHash = await git(`rev-parse`, `merge-queue`);
   stdout.write(`${mergeQueueHash} Branch: merge-queue\n`);
+
+  const configuration = await getConfiguration(git);
+
+  await git(`config`, `user.name`, configuration.user.name);
+  await git(`config`, `user.email`, configuration.user.email);
 
   return git;
 };
