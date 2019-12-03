@@ -26,5 +26,8 @@ exports.openRepository = dir => {
     await xfs.writeFilePromise(squashMessagePath, `${prefix}${squashMessage}`);
   };
 
+  await git(`checkout`, `merge-queue`);
+  await git(`checkout`, `master`);
+ 
   return git;
 };
