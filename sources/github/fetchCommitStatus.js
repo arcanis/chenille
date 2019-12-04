@@ -54,20 +54,22 @@ exports.fetchCommitStatus = async (git, prs) => {
     const entry = data.repository[`hash_${hash}`];
     const statusMap = new Map();
 
-    for (const {context, state} of entry.status.contexts) {
-      switch (state) {
-        case `SUCCESS`: {
-          statusMap.set(context, true);
-        } break;
+    if (entry.status !== null) {
+      for (const {context, state} of entry.status.contexts) {
+        switch (state) {
+          case `SUCCESS`: {
+            statusMap.set(context, true);
+          } break;
 
-        case `FAILURE`:
-        case `ERROR`: {
-          statusMap.set(context, false);
-        } break;
+          case `FAILURE`:
+          case `ERROR`: {
+            statusMap.set(context, false);
+          } break;
 
-        default: {
-          statusMap.set(context, false);
-        } break;
+          default: {
+            statusMap.set(context, false);
+          } break;
+        }
       }
     }
 
