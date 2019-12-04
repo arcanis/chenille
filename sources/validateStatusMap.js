@@ -1,8 +1,7 @@
 exports.validateStatusMap = statusMap => {
   let pending = false;
 
-  for (const title of titles) {
-    const status = statusMap.get(title);
+  for (const status of statusMap.values()) {
     if (status === false)
       return false;
 
