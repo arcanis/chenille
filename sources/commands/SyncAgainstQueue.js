@@ -9,13 +9,18 @@ const {setBranchToCommit} = require(`../git/setBranchToCommit`)
 const {normalizeStatusMap} = require(`../normalizeStatusMap`);
 const {validateStatusMap} = require(`../validateStatusMap`);
 
-class DispatchStatus extends Command {
+class SyncAgainstQueue extends Command {
   async execute() {
-    const git = await openRepository(npath.toPortablePath(this.cwd), {
+    const git = await openRepository(this.context.cwd, {
       stdout: this.context.stdout,
     });
 
     const prs = await getAllQueuedPullRequests(git);
+    if (prs.length === 0) {
+      this.context.stdout.write(`No PRs queued; bailout\n`);
+      return;
+    }
+
     const prsWithStatus = await this.context.driver.fetchCommitStatus(git, prs);
 
     for (const pr of prsWithStatus) {
@@ -42,12 +47,6 @@ class DispatchStatus extends Command {
   }
 }
 
-DispatchStatus.schema = yup.object().shape({
-  cwd: yup.string().required(),
-});
+SyncAgainstQueue.addPath(`sync`, `against`, `queue`);
 
-DispatchStatus.addPath(`dispatch`, `status`);
-
-DispatchStatus.addOption(`cwd`, Command.String(`--cwd`));
-
-module.exports = DispatchStatus;
+module.exports = SyncAgainstQueue;

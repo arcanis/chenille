@@ -5,9 +5,9 @@ const yup = require(`yup`);
 const {openRepository} = require(`../git/openRepository`);
 const {synchroniseWithMaster} = require(`../git/synchroniseWithMaster`);
 
-class Resync extends Command {
+class SyncAgainstMaster extends Command {
   async execute() {
-    const git = await openRepository(npath.toPortablePath(this.cwd), {
+    const git = await openRepository(this.context.cwd, {
       stdout: this.context.stdout,
     });
 
@@ -19,12 +19,6 @@ class Resync extends Command {
   }
 }
 
-Resync.schema = yup.object().shape({
-  cwd: yup.string().required(),
-});
+SyncAgainstMaster.addPath(`sync`, `against`, `master`);
 
-Resync.addPath(`resync`);
-
-Resync.addOption(`cwd`, Command.String(`--cwd`));
-
-module.exports = Resync;
+module.exports = SyncAgainstMaster;

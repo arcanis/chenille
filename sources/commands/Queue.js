@@ -8,7 +8,7 @@ const {sendToMergeQueue} = require(`../git/sendToMergeQueue`);
 
 class Queue extends Command {
   async execute() {
-    const git = await openRepository(npath.toPortablePath(this.cwd), {
+    const git = await openRepository(this.context.cwd, {
       stdout: this.context.stdout,
     });
 
@@ -30,14 +30,12 @@ class Queue extends Command {
 }
 
 Queue.schema = yup.object().shape({
-  cwd: yup.string().required(),
   title: yup.string().required(),
   pr: yup.number().required(),
 });
 
 Queue.addPath(`queue`);
 
-Queue.addOption(`cwd`, Command.String(`--cwd`));
 Queue.addOption(`title`, Command.String(`--title`));
 Queue.addOption(`pr`, Command.String());
 

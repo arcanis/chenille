@@ -7,7 +7,7 @@ const {removeFromMergeQueue} = require(`../git/removeFromMergeQueue`);
 
 class Cancel extends Command {
   async execute() {
-    const git = await openRepository(npath.toPortablePath(this.cwd), {
+    const git = await openRepository(this.context.cwd, {
       stdout: this.context.stdout,
     });
 
@@ -20,13 +20,11 @@ class Cancel extends Command {
 }
 
 Cancel.schema = yup.object().shape({
-  cwd: yup.string().required(),
   pr: yup.number().required(),
 });
 
 Cancel.addPath(`cancel`);
 
-Cancel.addOption(`cwd`, Command.String(`--cwd`));
 Cancel.addOption(`pr`, Command.String());
 
 module.exports = Cancel;
