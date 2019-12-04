@@ -32,6 +32,9 @@ exports.fetchCommitStatus = async (git, prs) => {
                     }
                     checkRuns(first: 100) {
                       nodes {
+                        title
+                        summary
+                        text
                         name
                         status
                         conclusion
@@ -46,6 +49,8 @@ exports.fetchCommitStatus = async (git, prs) => {
       }`,
     }
   });
+
+  console.log(require(`util`).inspect(data, {depth: Infinity}));
 
   const getStatusMapFor = hash => {
     const entry = data.repository[`hash_${hash}`];
