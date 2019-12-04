@@ -47,7 +47,7 @@ exports.fetchCommitStatus = async (git, prs) => {
     }
   });
 
-  console.log(body);
+  console.log(require(`util`).inspect(body, {depth: Infinity}));
   const {data} = body;
 
   const getStatusMapFor = hash => {
