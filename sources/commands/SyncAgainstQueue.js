@@ -25,6 +25,8 @@ class SyncAgainstQueue extends Command {
     for (const pr of prsWithStatus) {
       pr.statusMap = await normalizeStatusMap(git, pr.statusMap);
       pr.status = validateStatusMap(pr.statusMap);
+
+      this.context.stdout.write(`#${pr.number} - ${pr.title} - ${pr.status}\n`);
     }
 
     let okCount = 0;
