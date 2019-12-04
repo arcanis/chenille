@@ -37,6 +37,6 @@ switch (process.env.GITHUB_EVENT_NAME) {
   } break;
 
   case `schedule`: {
-    cli.runExit([`sync`, `against`, `queue`, `--cwd=${process.env.GITHUB_WORKSPACE}`], context);
+    cli.runExit([`sync`, `against`, `queue`], context);
   } break;
 }
