@@ -6,6 +6,6 @@ exports.normalizeStatusMap = async (git, statusMap) => {
     return statusMap;
 
   return new Map(configuration.requiredStatus.map(title => {
-    return statusMap.get(title);
+    return [title, statusMap.get(title)];
   }));
 };
