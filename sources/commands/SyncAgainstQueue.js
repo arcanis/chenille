@@ -1,7 +1,6 @@
-const {npath} = require(`@yarnpkg/fslib`);
 const {Command} = require(`clipanion`);
-const yup = require(`yup`);
 
+const {getAllQueuedPullRequests} = require(`../git/getAllQueuedPullRequests`);
 const {openRepository} = require(`../git/openRepository`);
 const {removeFromMergeQueue} = require(`../git/removeFromMergeQueue`);
 const {setBranchToCommit} = require(`../git/setBranchToCommit`)

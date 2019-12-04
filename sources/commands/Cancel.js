@@ -1,4 +1,3 @@
-const {npath} = require(`@yarnpkg/fslib`);
 const {Command} = require(`clipanion`);
 const yup = require(`yup`);
 

@@ -1,6 +1,4 @@
-const {npath} = require(`@yarnpkg/fslib`);
 const {Command} = require(`clipanion`);
-const yup = require(`yup`);
 
 const {openRepository} = require(`../git/openRepository`);
 const {synchroniseWithMaster} = require(`../git/synchroniseWithMaster`);
