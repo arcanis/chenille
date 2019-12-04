@@ -3,7 +3,7 @@ const got = require(`got`);
 exports.fetchCommitStatus = async (git, prs) => {
   const [owner, name] = process.env.GITHUB_REPOSITORY.split(/\//);
 
-  const {body: {data}} = await got.post(`https://api.github.com/graphql`, {
+  const {body} = await got.post(`https://api.github.com/graphql`, {
     json: true,
     headers: {
       Accept: `application/vnd.github.antiope-preview`,
@@ -46,6 +46,9 @@ exports.fetchCommitStatus = async (git, prs) => {
       }`,
     }
   });
+
+  console.log(body);
+  const {data} = body;
 
   const getStatusMapFor = hash => {
     const entry = data.repository[`hash_${hash}`];
