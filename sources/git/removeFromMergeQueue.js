@@ -6,7 +6,7 @@ exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => 
 
   const killPoint = prs.findIndex(({number}) => number === removedPr);
   if (killPoint === -1)
-    return {cancelled};
+    return cancelled;
 
   cancelled.push({
     ...prs[killPoint],
@@ -34,5 +34,5 @@ exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => 
   await git(`reset`, `--hard`, `temp/merge-queue`);
   await git(`branch`, `-D`, `temp/merge-queue`);
 
-  return {cancelled};
+  return cancelled;
 };

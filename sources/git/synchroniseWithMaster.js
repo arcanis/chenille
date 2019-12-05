@@ -4,7 +4,7 @@ const {isSynchronisedWithMaster} = require(`./isSynchronisedWithMaster`);
 exports.synchroniseWithMaster = async git => {
   const canceled = [];
   if (await isSynchronisedWithMaster(git))
-    return {canceled};
+    return canceled;
 
   const prs = await getAllQueuedPullRequests(git);
 
@@ -24,5 +24,5 @@ exports.synchroniseWithMaster = async git => {
   await git(`reset`, `--hard`, `temp/merge-queue`);
   await git(`branch`, `-D`, `temp/merge-queue`);
 
-  return {canceled};
+  return canceled;
 };
