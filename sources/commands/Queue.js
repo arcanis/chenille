@@ -23,7 +23,7 @@ class Queue extends Command {
       await removeFromMergeQueue(git, this.pr);
 
       this.context.stdout.write(`Squashing ${this.pr} into the merge queue (${await git(`rev-parse`, `--short`, local)})...\n`);
-      const cancelled = await sendToMergeQueue(git, {number: this.pr, title: this.number}, local);
+      const cancelled = await sendToMergeQueue(git, {number: this.pr, title: this.title}, local);
 
       if (cancelled.length > 0)
         return cancelled;
