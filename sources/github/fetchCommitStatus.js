@@ -3,7 +3,7 @@ const got = require(`got`);
 exports.fetchCommitStatus = async (git, prs) => {
   const [owner, name] = process.env.GITHUB_REPOSITORY.split(/\//);
 
-  const {body: {data}} = await got.post(`https://api.github.com/graphql`, {
+  const {body} = await got.post(`https://api.github.com/graphql`, {
     json: true,
     headers: {
       Accept: `application/vnd.github.antiope-preview`,
@@ -14,6 +14,16 @@ exports.fetchCommitStatus = async (git, prs) => {
         rateLimit {
           cost
           remaining
+        }
+        __type(name: "CheckSuite") {
+          name
+          fields {
+            name
+            type {
+              name
+              kind
+            }
+          }
         }
         repository(owner: "${owner}", name: "${name}") {
           ${prs.map(({hash}) => `
@@ -27,10 +37,13 @@ exports.fetchCommitStatus = async (git, prs) => {
                 }
                 checkSuites(first: 100) {
                   nodes {
+                    __typename
                     app {
                       name
+                      description
                     }
                     checkRuns(first: 100) {
+                      __typename
                       nodes {
                         title
                         summary
@@ -50,7 +63,8 @@ exports.fetchCommitStatus = async (git, prs) => {
     }
   });
 
-  console.log(require(`util`).inspect(data, {depth: Infinity}));
+  console.log(require(`util`).inspect(body, {depth: Infinity}));
+  const {data} = body;
 
   const getStatusMapFor = hash => {
     const entry = data.repository[`hash_${hash}`];
