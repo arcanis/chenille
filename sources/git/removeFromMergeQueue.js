@@ -1,12 +1,17 @@
 const {getAllQueuedPullRequests} = require(`./getAllQueuedPullRequests`);
 
-exports.removeFromMergeQueue = async (git, removedPr) => {
-  const canceled = [];
+exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => {
+  const cancelled = [];
   const prs = await getAllQueuedPullRequests(git);
 
   const killPoint = prs.findIndex(({number}) => number === removedPr);
   if (killPoint === -1)
-    return {canceled};
+    return {cancelled};
+
+  cancelled.push({
+    ...prs[killPoint],
+    reason,
+  });
 
   const {hash} = prs[killPoint];
 
@@ -18,7 +23,10 @@ exports.removeFromMergeQueue = async (git, removedPr) => {
       await git(`cherry-pick`, pr.hash);
     } catch {
       await git(`cherry-pick`, `--abort`);
-      canceled.push(pr);
+      cancelled.push({
+        ...pr,
+        reason: `Rebase on top of master failed`,
+      });
     }
   }
 
@@ -26,5 +34,5 @@ exports.removeFromMergeQueue = async (git, removedPr) => {
   await git(`reset`, `--hard`, `temp/merge-queue`);
   await git(`branch`, `-D`, `temp/merge-queue`);
 
-  return {canceled};
+  return {cancelled};
 };

@@ -1,10 +1,9 @@
 const {getAllQueuedPullRequests} = require(`./getAllQueuedPullRequests`);
+const {isSynchronisedWithMaster} = require(`./isSynchronisedWithMaster`);
 
 exports.synchroniseWithMaster = async git => {
   const canceled = [];
-
-  const count = await git(`rev-list`, `--count`, `merge-queue..master`);
-  if (count === 0)
+  if (await isSynchronisedWithMaster(git))
     return {canceled};
 
   const prs = await getAllQueuedPullRequests(git);
