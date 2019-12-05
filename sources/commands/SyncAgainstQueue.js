@@ -17,6 +17,8 @@ class SyncAgainstQueue extends Command {
     });
 
     const cancelled = await retryIfStale(async () => {
+      let cancelled = [];
+
       this.context.stdout.write(`Fetching the head for master and the merge queue...\n`);
       await this.context.driver.fetchFromOrigin(git, `master`, `merge-queue`);
 
@@ -28,13 +30,13 @@ class SyncAgainstQueue extends Command {
 
       if (!await isSynchronisedWithMaster(git)) {
         this.context.stdout.write(`Master is ahead of the merge queue; bailout\n`);
-        return;
+        return cancelled;
       }
 
       const prs = await getAllQueuedPullRequests(git);
       if (prs.length === 0) {
         this.context.stdout.write(`No PRs queued; bailout\n`);
-        return;
+        return cancelled;
       }
 
       const prsWithStatus = await this.context.driver.fetchCommitStatus(git, prs);
@@ -50,9 +52,6 @@ class SyncAgainstQueue extends Command {
       while (okCount < prsWithStatus.length && prsWithStatus[okCount].status === true)
         okCount += 1;
 
-      let push = false;
-      let cancelled = [];
-
       // If the merge queue contains green commits, then we can move
       // them into master. Since we have previously checked that
       // master and merge-queue are in sync, we don't risk overriding
@@ -61,8 +60,6 @@ class SyncAgainstQueue extends Command {
       if (okCount > 0) {
         this.context.stdout.write(`Synchronizing master to ${prsWithStatus[okCount - 1].number}`);
         await setBranchToCommit(git, `master`, prsWithStatus[okCount - 1].hash);
-
-        push = true;
       }
 
       // If a commit adjacent to a green commit is red, is probably
@@ -73,11 +70,9 @@ class SyncAgainstQueue extends Command {
       if (okCount < prsWithStatus.length && prsWithStatus[okCount].status === -1) {
         this.context.stdout.write(`Removing ${prsWithStatus[okCount].number}`);
         cancelled = await removeFromMergeQueue(git, prsWithStatus[okCount].number, {reason: `Tests results are red`});
-
-        push = true;
       }
 
-      if (push) {
+      if (okCount > 0 || cancelled.length > 0) {
         this.context.stdout.write(`Done - pushing the changes!\n`);
         await this.context.driver.pushToOrigin(git, `--atomic`, `--force-with-lease`, `master`, `merge-queue`);
       }

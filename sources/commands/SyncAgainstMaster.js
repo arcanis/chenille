@@ -24,10 +24,12 @@ class SyncAgainstMaster extends Command {
       const cancelled = await synchroniseWithMaster(git);
 
       if (cancelled.length === 0)
-        return;
+        return cancelled;
 
       this.context.stdout.write(`Done - pushing the changes!\n`);
       await this.context.driver.pushToOrigin(git, `--atomic`, `--force-with-lease`, `master`, `merge-queue`);
+
+      return cancelled;
     });
 
     await this.context.driver.sendCancelNotifications(cancelled);
