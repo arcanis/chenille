@@ -1,3 +1,5 @@
+const got = require(`got`);
+
 exports.sendCancelNotifications = async (prs) => {
   const [owner, name] = process.env.GITHUB_REPOSITORY.split(/\//);
 
