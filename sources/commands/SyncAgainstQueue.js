@@ -67,7 +67,7 @@ class SyncAgainstQueue extends Command {
       // the queue in the hope that the following commits will be
       // green (all the tests will unfortunately have to run anew).
 
-      if (okCount < prsWithStatus.length && prsWithStatus[okCount].status === -1) {
+      if (okCount < prsWithStatus.length && prsWithStatus[okCount].status === false) {
         this.context.stdout.write(`Removing ${prsWithStatus[okCount].number}`);
         cancelled = await removeFromMergeQueue(git, prsWithStatus[okCount].number, {reason: `Tests results are red`});
       }

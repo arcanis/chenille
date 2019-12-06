@@ -15,16 +15,6 @@ exports.fetchCommitStatus = async (git, prs) => {
           cost
           remaining
         }
-        __type(name: "CheckSuite") {
-          name
-          fields {
-            name
-            type {
-              name
-              kind
-            }
-          }
-        }
         repository(owner: "${owner}", name: "${name}") {
           ${prs.map(({hash}) => `
             hash_${hash}: object(oid: "${hash}") {
@@ -37,13 +27,11 @@ exports.fetchCommitStatus = async (git, prs) => {
                 }
                 checkSuites(first: 100) {
                   nodes {
-                    __typename
                     app {
                       name
                       description
                     }
                     checkRuns(first: 100) {
-                      __typename
                       nodes {
                         title
                         summary
