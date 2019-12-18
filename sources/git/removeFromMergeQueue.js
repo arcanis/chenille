@@ -4,7 +4,7 @@ exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => 
   const cancelled = [];
   const prs = await getAllQueuedPullRequests(git);
 
-  const killPoint = prs.findIndex(({number}) => number === removedPr);
+  const killPoint = prs.findIndex(({number}) => number == removedPr);
   if (killPoint === -1)
     return cancelled;
 

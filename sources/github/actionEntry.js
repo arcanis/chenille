@@ -27,7 +27,7 @@ switch (process.env.GITHUB_EVENT_NAME) {
 
   case `pull_request`: {
     if (eventFile.action === `synchronize`) {
-      cli.runExit([`cancel`, String(eventFile.number)], context);
+      cli.runExit([`cancel`, String(eventFile.number), `--reason=New commits have been dispatched`], context);
     }
   } break;
 

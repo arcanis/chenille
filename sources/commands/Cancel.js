@@ -16,7 +16,7 @@ class Cancel extends Command {
       await this.context.driver.fetchFromOrigin(git, git.config.branches.mergeQueue);
 
       this.context.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
-      const cancelled = await removeFromMergeQueue(git, this.pr, {reason: `Manual request`});
+      const cancelled = await removeFromMergeQueue(git, this.pr, {reason: this.reason || `Manual request`});
 
       if (cancelled.length === 0)
         return cancelled;
@@ -33,6 +33,7 @@ class Cancel extends Command {
 
 Cancel.schema = yup.object().shape({
   pr: yup.number().required(),
+  reason: yup.string(),
 });
 
 Cancel.addPath(`cancel`);
