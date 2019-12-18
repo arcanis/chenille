@@ -59,7 +59,7 @@ class SyncAgainstQueue extends Command {
 
       if (okCount > 0) {
         this.context.stdout.write(`Synchronizing ${git.config.branches.master} to ${prsWithStatus[okCount - 1].number}`);
-        await setBranchToCommit(git, config.branches.master, prsWithStatus[okCount - 1].hash);
+        await setBranchToCommit(git, git.config.branches.master, prsWithStatus[okCount - 1].hash);
       }
 
       // If a commit adjacent to a green commit is red, is probably
