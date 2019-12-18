@@ -27,7 +27,7 @@ switch (process.env.GITHUB_EVENT_NAME) {
 
   case `pull_request`: {
     if (eventFile.action === `synchronize`) {
-      cli.runExit([`cancel`, String(eventFile.number), `--title=${eventFile.pull_request.title}`], context);
+      cli.runExit([`cancel`, String(eventFile.number)], context);
     }
   } break;
 
