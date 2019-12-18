@@ -23,8 +23,13 @@ class SyncAgainstMaster extends Command {
       this.context.stdout.write(`Syncing against ${git.config.branches.master}...\n`);
       const cancelled = await synchroniseWithMaster(git);
 
-      if (cancelled.length === 0)
-        return cancelled;
+      // We must always push the result, because it's possible for
+      // our merge queue to not contain any PR that isn't in master
+      // but that doesn't mean we don't want the merge queue to
+      // follow master.
+      //
+      // if (cancelled.length === 0)
+      //   return cancelled;
 
       this.context.stdout.write(`Done - pushing the changes!\n`);
       await this.context.driver.pushToOrigin(git, `--atomic`, `--force-with-lease`, git.config.branches.master, git.config.branches.mergeQueue);
