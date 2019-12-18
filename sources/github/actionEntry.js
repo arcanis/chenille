@@ -4,7 +4,7 @@ require(`../../.pnp.js`).setup();
 const {npath} = require(`@yarnpkg/fslib`);
 
 const cli = require(`../cli`);
-const {BASE_CONFIGURATION} = reauire(`../getConfiguration`);
+const {BASE_CONFIGURATION} = require(`../getConfiguration`);
 
 const {getEventFile} = require(`./getEventFile`);
 
