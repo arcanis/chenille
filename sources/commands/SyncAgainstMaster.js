@@ -36,6 +36,6 @@ class SyncAgainstMaster extends Command {
   }
 }
 
-SyncAgainstMaster.addPath(`sync`, `against`, git.config.branches.master);
+SyncAgainstMaster.addPath(`sync`, `against`, `master`);
 
 module.exports = SyncAgainstMaster;
