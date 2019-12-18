@@ -10,7 +10,7 @@ exports.sendCancelNotifications = async (prs) => {
         Authorization: `token ${process.env.GITHUB_TOKEN}`,
       },
       body: {
-        body: `Your PR got removed from the merge queue. Reason: ${pr.reason}.`,
+        body: `Your PR got removed from the merge queue.\n\nReason: ${pr.reason}.`,
       },
     });
   }
