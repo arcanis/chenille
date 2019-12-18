@@ -8,7 +8,7 @@ exports.sendToMergeQueue = async (git, pr, hash) => {
       `-c`, `user.email=${authorEmail}`,
     ];
 
-    await git(`checkout`, `merge-queue`);
+    await git(`checkout`, git.config.branches.mergeQueue);
     await git(`merge`, `--squash`, hash);
     await git.prefixSquashMessage(`[#${pr.number}] ${pr.title}\n\nCloses: #${pr.number}\n\n`);
     await git(...author, `commit`, `--no-edit`, `--author`, `${authorName} <${authorEmail}>`);
@@ -17,7 +17,7 @@ exports.sendToMergeQueue = async (git, pr, hash) => {
   } catch (error) {
     return [{
       ...pr,
-      reason: `Merge into master failed`,
+      reason: `Merge into ${git.config.branches.master} failed`,
     }];
   }
 };

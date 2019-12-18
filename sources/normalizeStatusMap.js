@@ -1,11 +1,8 @@
-const {getConfiguration} = require(`./getConfiguration`);
-
 exports.normalizeStatusMap = async (git, statusMap) => {
-  const configuration = await getConfiguration(git);
-  if (!configuration.requiredStatus)
+  if (!git.config.requiredStatus)
     return statusMap;
 
-  return new Map(configuration.requiredStatus.map(title => {
+  return new Map(git.config.requiredStatus.map(title => {
     return [title, statusMap.get(title)];
   }));
 };

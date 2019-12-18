@@ -1,7 +1,7 @@
 exports.getAllQueuedPullRequests = async (git, filter = `[[:digit:]]\\+` ) => {
   const prs = [];
 
-  const output = await git(`log`, `--reverse`, `--grep=^\\[#${filter}\\]`, `master..merge-queue`, `--pretty=format:%s%n%H`);
+  const output = await git(`log`, `--reverse`, `--grep=^\\[#${filter}\\]`, `${git.config.branches.master}..${git.config.branches.mergeQueue}`, `--pretty=format:%s%n%H`);
   if (output.length === 0)
     return prs;
 

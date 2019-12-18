@@ -15,7 +15,7 @@ exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => 
 
   const {hash} = prs[killPoint];
 
-  await git(`checkout`, `-b`, `temp/merge-queue`, `merge-queue`);
+  await git(`checkout`, `-b`, `temp/${git.config.branches.mergeQueue}`, git.config.branches.mergeQueue);
   await git(`reset`, `--hard`, `${hash}^1`);
 
   for (const pr of prs.slice(killPoint + 1)) {
@@ -25,14 +25,14 @@ exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => 
       await git(`cherry-pick`, `--abort`);
       cancelled.push({
         ...pr,
-        reason: `Rebase on top of master failed`,
+        reason: `Rebase on top of ${git.config.branches.master} failed`,
       });
     }
   }
 
-  await git(`checkout`, `merge-queue`);
-  await git(`reset`, `--hard`, `temp/merge-queue`);
-  await git(`branch`, `-D`, `temp/merge-queue`);
+  await git(`checkout`, git.config.branches.mergeQueue);
+  await git(`reset`, `--hard`, `temp/${git.config.branches.mergeQueue}`);
+  await git(`branch`, `-D`, `temp/${git.config.branches.mergeQueue}`);
 
   return cancelled;
 };

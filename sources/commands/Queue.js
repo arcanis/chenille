@@ -17,7 +17,7 @@ class Queue extends Command {
 
     const cancelled = await retryIfStale(async () => {
       this.context.stdout.write(`Fetching the head for ${remote}...\n`);
-      await this.context.driver.fetchFromOrigin(git, `merge-queue`, `${remote}:${local}`);
+      await this.context.driver.fetchFromOrigin(git, git.config.branches.mergeQueue, `${remote}:${local}`);
 
       this.context.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
       await removeFromMergeQueue(git, this.pr);
@@ -29,7 +29,7 @@ class Queue extends Command {
         return cancelled;
 
       this.context.stdout.write(`Done - pushing the changes!\n`);
-      await this.context.driver.pushToOrigin(git, `--atomic`, `--force-with-lease`, `merge-queue`);
+      await this.context.driver.pushToOrigin(git, `--atomic`, `--force-with-lease`, git.config.branches.mergeQueue);
 
       return cancelled;
     });

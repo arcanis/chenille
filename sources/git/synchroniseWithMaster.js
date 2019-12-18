@@ -8,8 +8,8 @@ exports.synchroniseWithMaster = async git => {
 
   const prs = await getAllQueuedPullRequests(git);
 
-  await git(`checkout`, `-b`, `temp/merge-queue`, `merge-queue`);
-  await git(`reset`, `--hard`, `master`);
+  await git(`checkout`, `-b`, `temp/${git.config.branches.mergeQueue}`, git.config.branches.mergeQueue);
+  await git(`reset`, `--hard`, git.config.branches.master);
 
   for (const pr of prs) {
     try {
@@ -20,9 +20,9 @@ exports.synchroniseWithMaster = async git => {
     }
   }
   
-  await git(`checkout`, `merge-queue`);
-  await git(`reset`, `--hard`, `temp/merge-queue`);
-  await git(`branch`, `-D`, `temp/merge-queue`);
+  await git(`checkout`, git.config.branches.mergeQueue);
+  await git(`reset`, `--hard`, `temp/${git.config.branches.mergeQueue}`);
+  await git(`branch`, `-D`, `temp/${git.config.branches.mergeQueue}`);
 
   return canceled;
 };

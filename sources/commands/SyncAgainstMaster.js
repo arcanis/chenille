@@ -11,8 +11,8 @@ class SyncAgainstMaster extends Command {
     });
 
     const cancelled = await retryIfStale(async () => {
-      this.context.stdout.write(`Fetching the head for master and the merge queue...\n`);
-      await this.context.driver.fetchFromOrigin(git, `master`, `merge-queue`);
+      this.context.stdout.write(`Fetching the head for ${git.config.branches.master} and the merge queue...\n`);
+      await this.context.driver.fetchFromOrigin(git, git.config.branches.master, git.config.branches.mergeQueue);
 
       // If we have any commit that are on master but not yet inside
       // the merge queue, then we need to rebase the whole merge
@@ -20,14 +20,14 @@ class SyncAgainstMaster extends Command {
       // that the new master commits would cause the commits in the
       // merge queue to fail)
 
-      this.context.stdout.write(`Syncing against master...\n`);
+      this.context.stdout.write(`Syncing against ${git.config.branches.master}...\n`);
       const cancelled = await synchroniseWithMaster(git);
 
       if (cancelled.length === 0)
         return cancelled;
 
       this.context.stdout.write(`Done - pushing the changes!\n`);
-      await this.context.driver.pushToOrigin(git, `--atomic`, `--force-with-lease`, `master`, `merge-queue`);
+      await this.context.driver.pushToOrigin(git, `--atomic`, `--force-with-lease`, git.config.branches.master, git.config.branches.mergeQueue);
 
       return cancelled;
     });
@@ -36,6 +36,6 @@ class SyncAgainstMaster extends Command {
   }
 }
 
-SyncAgainstMaster.addPath(`sync`, `against`, `master`);
+SyncAgainstMaster.addPath(`sync`, `against`, git.config.branches.master);
 
 module.exports = SyncAgainstMaster;

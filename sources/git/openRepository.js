@@ -31,25 +31,22 @@ exports.openRepository = async (dir, {stdout}) => {
     await xfs.writeFilePromise(squashMessagePath, `${prefix}${squashMessage}`);
   };
 
-  await git(`checkout`, `master`);
+  git.config = await getConfiguration(git);
+
+  await git(`checkout`, git.config.branches.master);
 
   try {
-    await git(`checkout`, `merge-queue`);
+    await git(`checkout`, git.config.branches.mergeQueue);
   } catch {
-    await git(`checkout`, `merge-queue`, `master`);
-    await git(`branch`, `-u`, `origin/merge-queue`);
+    await git(`checkout`, git.config.branches.mergeQueue, git.config.branches.master);
+    await git(`branch`, `-u`, `origin/${git.config.branches.mergeQueue}`);
   }
 
-  const masterHash = await git(`rev-parse`, `master`);
-  stdout.write(`${masterHash} Branch: master\n`);
+  const masterHash = await git(`rev-parse`, git.config.branches.master);
+  stdout.write(`${masterHash} Branch: ${git.config.branches.master}\n`);
 
-  const mergeQueueHash = await git(`rev-parse`, `merge-queue`);
-  stdout.write(`${mergeQueueHash} Branch: merge-queue\n`);
-
-  const configuration = await getConfiguration(git);
-
-  await git(`config`, `user.name`, configuration.user.name);
-  await git(`config`, `user.email`, configuration.user.email);
+  const mergeQueueHash = await git(`rev-parse`, git.config.branches.mergeQueue);
+  stdout.write(`${mergeQueueHash} Branch: ${git.config.branches.mergeQueue}\n`);
 
   return git;
 };

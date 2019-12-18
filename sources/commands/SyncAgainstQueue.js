@@ -20,7 +20,7 @@ class SyncAgainstQueue extends Command {
       let cancelled = [];
 
       this.context.stdout.write(`Fetching the head for master and the merge queue...\n`);
-      await this.context.driver.fetchFromOrigin(git, `master`, `merge-queue`);
+      await this.context.driver.fetchFromOrigin(git, git.config.branches.master, git.config.branches.mergeQueue);
 
       // There is a chance that this workflow is executed right after
       // something has been pushed on master but before the
@@ -29,7 +29,7 @@ class SyncAgainstQueue extends Command {
       // forgetting any ninja-landed commit.
 
       if (!await isSynchronisedWithMaster(git)) {
-        this.context.stdout.write(`Master is ahead of the merge queue; bailout\n`);
+        this.context.stdout.write(`Branch ${git.config.branches.master} is ahead of the merge queue; bailout\n`);
         return cancelled;
       }
 
@@ -58,8 +58,8 @@ class SyncAgainstQueue extends Command {
       // master by accident (because we'll push w/ force-with-lease).
 
       if (okCount > 0) {
-        this.context.stdout.write(`Synchronizing master to ${prsWithStatus[okCount - 1].number}`);
-        await setBranchToCommit(git, `master`, prsWithStatus[okCount - 1].hash);
+        this.context.stdout.write(`Synchronizing ${git.config.branches.master} to ${prsWithStatus[okCount - 1].number}`);
+        await setBranchToCommit(git, config.branches.master, prsWithStatus[okCount - 1].hash);
       }
 
       // If a commit adjacent to a green commit is red, is probably
@@ -74,7 +74,7 @@ class SyncAgainstQueue extends Command {
 
       if (okCount > 0 || cancelled.length > 0) {
         this.context.stdout.write(`Done - pushing the changes!\n`);
-        await this.context.driver.pushToOrigin(git, `--atomic`, `--force-with-lease`, `master`, `merge-queue`);
+        await this.context.driver.pushToOrigin(git, `--atomic`, `--force-with-lease`, git.config.branches.master, git.config.branches.mergeQueue);
       }
 
       return cancelled;

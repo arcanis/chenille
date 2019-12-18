@@ -4,6 +4,7 @@ require(`../../.pnp.js`).setup();
 const {npath} = require(`@yarnpkg/fslib`);
 
 const cli = require(`../cli`);
+const {BASE_CONFIGURATION} = reauire(`../getConfiguration`);
 
 const {getEventFile} = require(`./getEventFile`);
 
@@ -31,7 +32,7 @@ switch (process.env.GITHUB_EVENT_NAME) {
   } break;
 
   case `push`: {
-    if (eventFile.ref === `refs/heads/master`) {
+    if (eventFile.ref === `refs/heads/${BASE_CONFIGURATION.branches.master}`) {
       cli.runExit([`sync`, `against`, `master`], context);
     }
   } break;
