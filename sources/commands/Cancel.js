@@ -11,14 +11,14 @@ class Cancel extends Command {
       stdout: this.context.stdout,
     });
 
-    const canceled = await retryIfStale(async () => {
+    const cancelled = await retryIfStale(async () => {
       this.context.stdout.write(`Fetching the head for ${git.config.branches.mergeQueue}...\n`);
       await this.context.driver.fetchFromOrigin(git, git.config.branches.mergeQueue);
 
       this.context.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
       const cancelled = await removeFromMergeQueue(git, this.pr, {reason: `Manual request`});
 
-      if (canceled.length === 0)
+      if (cancelled.length === 0)
         return cancelled;
 
       this.context.stdout.write(`Done - pushing the changes!\n`);
