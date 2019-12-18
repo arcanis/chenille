@@ -11,12 +11,10 @@ exports.getConfiguration = async git => {
   let configFile;
   try {
     configFile = await git(`show`, `${exports.BASE_CONFIGURATION.branches.master}:chenille.yml`);
-  } catch {
-    return {};
-  }
+  } catch {}
 
   return {
-    ...yaml.load(configFile),
+    ...configFile ? yaml.load(configFile) : {},
     ...exports.BASE_CONFIGURATION,
   };
 };
