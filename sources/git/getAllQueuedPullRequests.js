@@ -17,5 +17,8 @@ exports.getAllQueuedPullRequests = async (git, filter = `[[:digit:]]\\+` ) => {
     prs.push({number, title, hash});
   }
 
+  for (const pr of prs)
+    console.log(JSON.stringify(pr));
+
   return prs;
 };
