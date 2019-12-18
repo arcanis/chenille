@@ -8,7 +8,7 @@ exports.sendCancelNotifications = async (prs) => {
     await got.post(`https://api.github.com/v3/repos/${owner}/${name}/issues/${pr.number}/comments`, {
       json: true,
       headers: {
-        Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
+        Authorization: `token ${process.env.GITHUB_TOKEN}`,
       },
       body: {
         body: `Your PR got removed from the merge queue. Reason: ${pr.reason}.`,
