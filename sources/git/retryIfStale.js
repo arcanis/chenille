@@ -3,7 +3,7 @@ exports.retryIfStale = async (cb) => {
     try {
       return await cb();
     } catch (error) {
-      if (error.stdout.includes(`(stale info)`)) {
+      if (error.stdout && error.stdout.includes(`(stale info)`)) {
         continue;
       } else {
         throw error;
