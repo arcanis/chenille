@@ -39,5 +39,6 @@ Cancel.schema = yup.object().shape({
 Cancel.addPath(`cancel`);
 
 Cancel.addOption(`pr`, Command.String());
+Cancel.addOption(`reason`, Command.String());
 
 module.exports = Cancel;
