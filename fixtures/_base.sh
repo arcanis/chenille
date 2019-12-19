@@ -6,6 +6,10 @@ setup_repo() {
     git commit --allow-empty -m 'First commit'
     git checkout -b "$MERGE_QUEUE"
     git checkout "$MASTER"
+
+    ORIGIN=$(mktemp -d)
+    git clone --mirror . "$ORIGIN"
+    git remote add origin "$ORIGIN"
 }
 
 open_feature() {

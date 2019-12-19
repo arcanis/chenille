@@ -51,7 +51,6 @@ exports.fetchCommitStatus = async (git, prs) => {
     }
   });
 
-  console.log(require(`util`).inspect(body, {depth: Infinity}));
   const {data} = body;
 
   const getStatusMapFor = hash => {
@@ -91,7 +90,7 @@ exports.fetchCommitStatus = async (git, prs) => {
 
     return statusMap;
   };
-  
+
   return prs.map(pr => {
     return {...pr, statusMap: getStatusMapFor(pr.hash)};
   });

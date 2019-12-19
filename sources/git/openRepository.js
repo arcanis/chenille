@@ -4,11 +4,12 @@ const cp = require(`child_process`);
 
 const {getConfiguration} = require(`../getConfiguration`);
 
-exports.openRepository = async (dir, {stdout}) => {
+exports.openRepository = async (dir, {stdout} = {}) => {
   const nDir = npath.fromPortablePath(dir);
 
   const git = async (...args) => {
-    stdout.write(`${chalk.grey(`$ git ${args.join(` `)}`)}\n`);
+    if (stdout)
+      stdout.write(`${chalk.grey(`$ git ${args.join(` `)}`)}\n`);
 
     const result = cp.execFileSync(`git`, args, {
       cwd: nDir,
@@ -42,11 +43,13 @@ exports.openRepository = async (dir, {stdout}) => {
     await git(`branch`, `-u`, `origin/${git.config.branches.mergeQueue}`);
   }
 
-  const masterHash = await git(`rev-parse`, git.config.branches.master);
-  stdout.write(`${masterHash} Branch: ${git.config.branches.master}\n`);
+  if (stdout) {
+    const masterHash = await git(`rev-parse`, git.config.branches.master);
+    stdout.write(`${masterHash} Branch: ${git.config.branches.master}\n`);
 
-  const mergeQueueHash = await git(`rev-parse`, git.config.branches.mergeQueue);
-  stdout.write(`${mergeQueueHash} Branch: ${git.config.branches.mergeQueue}\n`);
+    const mergeQueueHash = await git(`rev-parse`, git.config.branches.mergeQueue);
+    stdout.write(`${mergeQueueHash} Branch: ${git.config.branches.mergeQueue}\n`);
+  }
 
   return git;
 };

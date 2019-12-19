@@ -69,7 +69,7 @@ class SyncAgainstQueue extends Command {
 
       if (okCount < prsWithStatus.length && prsWithStatus[okCount].status === false) {
         this.context.stdout.write(`Removing ${prsWithStatus[okCount].number}\n`);
-        cancelled = await removeFromMergeQueue(git, prsWithStatus[okCount].number, {reason: `Tests results are red`});
+        cancelled = await removeFromMergeQueue(git, prsWithStatus[okCount].number, {reason: `Test results are red`});
       }
 
       if (okCount > 0 || cancelled.length > 0) {
