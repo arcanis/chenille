@@ -42,10 +42,19 @@ class SyncAgainstQueue extends Command {
       const prsWithStatus = await this.context.driver.fetchCommitStatus(git, prs);
 
       for (const pr of prsWithStatus) {
+        const originalStatusMap = pr.statusMap;
+
         pr.statusMap = await normalizeStatusMap(git, pr.statusMap);
         pr.status = validateStatusMap(pr.statusMap);
 
         this.context.stdout.write(`#${pr.number} - ${pr.title} - ${pr.status}\n`);
+
+        if (pr.status === false) {
+          this.context.stdout.write(`${require(`util`).inspect({
+            original: originalStatusMap,
+            normalized: pr.statusMap,
+          })}\n`);
+        }
       }
 
       let okCount = 0;
