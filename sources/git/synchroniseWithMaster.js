@@ -16,7 +16,10 @@ exports.synchroniseWithMaster = async git => {
       await git(`cherry-pick`, pr.hash);
     } catch {
       await git(`cherry-pick`, `--abort`);
-      canceled.push(pr);
+      canceled.push({
+        ...pr,
+        reason: `Rebase on top of ${git.config.branches.master} failed`,
+      });
     }
   }
   
