@@ -48,12 +48,7 @@ class SyncAgainstQueue extends Command {
         pr.status = validateStatusMap(pr.statusMap);
 
         this.context.stdout.write(`#${pr.number} - ${pr.title} - ${pr.status}\n`);
-
-        if (pr.status === false) {
-          this.context.stdout.write(`${require(`util`).inspect({
-            original: originalStatusMap,
-            normalized: pr.statusMap,
-          })}\n`);
+        this.context.stdout.write(`${require(`util`).inspect(originalStatusMap)}\n`);
         }
       }
 
