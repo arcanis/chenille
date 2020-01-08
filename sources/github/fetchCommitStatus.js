@@ -70,7 +70,7 @@ exports.fetchCommitStatus = async (git, prs) => {
           } break;
 
           default: {
-            statusMap.set(context, false);
+            statusMap.set(context, null);
           } break;
         }
       }
