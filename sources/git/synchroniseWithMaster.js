@@ -13,7 +13,15 @@ exports.synchroniseWithMaster = async git => {
 
   for (const pr of prs) {
     try {
-      await git(`cherry-pick`, pr.hash);
+      const authorName = await git(`log`, `-1`, `--pretty=format:'%an'`, pr.hash);
+      const authorEmail = await git(`log`, `-1`, `--pretty=format:'%ae'`, pr.hash);
+
+      const author = [
+        `-c`, `user.name=${authorName}`,
+        `-c`, `user.email=${authorEmail}`,
+      ];
+
+      await git(...author, `cherry-pick`, pr.hash);
     } catch (error) {
       await git(`cherry-pick`, `--abort`);
       canceled.push({
