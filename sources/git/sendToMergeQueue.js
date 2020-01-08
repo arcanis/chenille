@@ -17,7 +17,7 @@ exports.sendToMergeQueue = async (git, pr, hash) => {
   } catch (error) {
     return [{
       ...pr,
-      reason: `Merge into ${git.config.branches.master} failed`,
+      reason: `Merge into ${git.config.branches.master} failed (${error.message})`,
     }];
   }
 };
