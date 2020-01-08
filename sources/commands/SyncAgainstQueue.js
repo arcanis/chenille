@@ -49,7 +49,6 @@ class SyncAgainstQueue extends Command {
 
         this.context.stdout.write(`#${pr.number} - ${pr.title} - ${pr.status}\n`);
         this.context.stdout.write(`${require(`util`).inspect(originalStatusMap)}\n`);
-        }
       }
 
       let okCount = 0;
