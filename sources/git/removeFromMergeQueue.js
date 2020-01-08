@@ -25,7 +25,7 @@ exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => 
       await git(`cherry-pick`, `--abort`);
       cancelled.push({
         ...pr,
-        reason: `Rebase on top of ${git.config.branches.master} failed`,
+        reason: `Rebase on top of its new parent (${await git(`rev-parse`, `--short`, `HEAD`)}) failed`,
       });
     }
   }
