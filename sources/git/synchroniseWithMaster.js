@@ -14,15 +14,15 @@ exports.synchroniseWithMaster = async git => {
   for (const pr of prs) {
     try {
       await git(`cherry-pick`, pr.hash);
-    } catch {
+    } catch (error) {
       await git(`cherry-pick`, `--abort`);
       canceled.push({
         ...pr,
-        reason: `Rebase on top of ${git.config.branches.master} failed`,
+        reason: `Rebase on top of ${git.config.branches.master} failed (${error.message})`,
       });
     }
   }
-  
+
   await git(`checkout`, git.config.branches.mergeQueue);
   await git(`reset`, `--hard`, `temp/${git.config.branches.mergeQueue}`);
   await git(`branch`, `-D`, `temp/${git.config.branches.mergeQueue}`);
