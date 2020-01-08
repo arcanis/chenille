@@ -9,7 +9,7 @@ exports.sendToMergeQueue = async (git, pr, hash) => {
     ];
 
     await git(`checkout`, git.config.branches.mergeQueue);
-    await git(`merge`, `--squash`, hash);
+    await git(...author, `merge`, `--squash`, hash);
     await git.prefixSquashMessage(`[#${pr.number}] ${pr.title}\n\nCloses: #${pr.number}\n\n`);
     await git(...author, `commit`, `--no-edit`, `--author`, `${authorName} <${authorEmail}>`);
 
