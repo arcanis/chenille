@@ -1,5 +1,6 @@
 const {Command} = require(`clipanion`);
 
+const {clearBranches} = require(`../git/clearBranches`);
 const {openRepository} = require(`../git/openRepository`);
 const {retryIfStale} = require(`../git/retryIfStale`);
 const {synchroniseWithMaster} = require(`../git/synchroniseWithMaster`);
@@ -11,6 +12,8 @@ class SyncAgainstMaster extends Command {
     });
 
     const cancelled = await retryIfStale(async () => {
+      await clearBranches(git, git.config.branches.master, git.config.branches.mergeQueue);
+
       this.context.stdout.write(`Fetching the head for ${git.config.branches.master} and the merge queue...\n`);
       await this.context.driver.fetchFromOrigin(git, git.config.branches.master, git.config.branches.mergeQueue);
 

@@ -1,5 +1,6 @@
 const {Command} = require(`clipanion`);
 
+const {clearBranches} = require(`../git/clearBranches`);
 const {getAllQueuedPullRequests} = require(`../git/getAllQueuedPullRequests`);
 const {isSynchronisedWithMaster} = require(`../git/isSynchronisedWithMaster`);
 const {openRepository} = require(`../git/openRepository`);
@@ -18,6 +19,8 @@ class SyncAgainstQueue extends Command {
 
     const cancelled = await retryIfStale(async () => {
       let cancelled = [];
+
+      await clearBranches(git, git.config.branches.master, git.config.branches.mergeQueue);
 
       this.context.stdout.write(`Fetching the head for master and the merge queue...\n`);
       await this.context.driver.fetchFromOrigin(git, git.config.branches.master, git.config.branches.mergeQueue);

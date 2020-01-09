@@ -1,6 +1,7 @@
 const {Command} = require(`clipanion`);
 const yup = require(`yup`);
 
+const {clearBranches} = require(`../git/clearBranches`);
 const {openRepository} = require(`../git/openRepository`);
 const {removeFromMergeQueue} = require(`../git/removeFromMergeQueue`);
 const {retryIfStale} = require(`../git/retryIfStale`);
@@ -16,6 +17,8 @@ class Queue extends Command {
     const local = `pr-${this.pr}`;
 
     const cancelled = await retryIfStale(async () => {
+      await clearBranches(git, git.config.branches.mergeQueue, local);
+
       this.context.stdout.write(`Fetching the head for ${remote}...\n`);
       await this.context.driver.fetchFromOrigin(git, git.config.branches.mergeQueue, `${remote}:${local}`);
 
