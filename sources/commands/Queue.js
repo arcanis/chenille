@@ -20,7 +20,7 @@ class Queue extends Command {
       await clearBranches(git, git.config.branches.mergeQueue, local);
 
       this.context.stdout.write(`Fetching the head for ${remote}...\n`);
-      await this.context.driver.fetchFromOrigin(git, git.config.branches.mergeQueue, `${remote}:${local}`);
+      await this.context.driver.fetchFromOrigin(git, `${git.config.branches.mergeQueue}:${git.config.branches.mergeQueue}`, `${remote}:${local}`);
 
       this.context.stdout.write(`Removing ${this.pr} from the merge queue (if needed)...\n`);
       await removeFromMergeQueue(git, this.pr);

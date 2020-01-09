@@ -23,7 +23,7 @@ class SyncAgainstQueue extends Command {
       await clearBranches(git, git.config.branches.master, git.config.branches.mergeQueue);
 
       this.context.stdout.write(`Fetching the head for master and the merge queue...\n`);
-      await this.context.driver.fetchFromOrigin(git, git.config.branches.master, git.config.branches.mergeQueue);
+      await this.context.driver.fetchFromOrigin(git, `${git.config.branches.master}:${git.config.branches.master}`, `${git.config.branches.mergeQueue}:${git.config.branches.mergeQueue}`);
 
       // There is a chance that this workflow is executed right after
       // something has been pushed on master but before the

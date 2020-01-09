@@ -15,7 +15,7 @@ class SyncAgainstMaster extends Command {
       await clearBranches(git, git.config.branches.master, git.config.branches.mergeQueue);
 
       this.context.stdout.write(`Fetching the head for ${git.config.branches.master} and the merge queue...\n`);
-      await this.context.driver.fetchFromOrigin(git, git.config.branches.master, git.config.branches.mergeQueue);
+      await this.context.driver.fetchFromOrigin(git, `${git.config.branches.master}:${git.config.branches.master}`, `${git.config.branches.mergeQueue}:${git.config.branches.mergeQueue}`);
 
       // If we have any commit that are on master but not yet inside
       // the merge queue, then we need to rebase the whole merge
