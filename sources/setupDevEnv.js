@@ -10,5 +10,4 @@ const root = path.dirname(__dirname);
 require(`@babel/register`)({
   root,
   extensions: [`.ts`, `.js`],
-  only: [`/`],
 });
