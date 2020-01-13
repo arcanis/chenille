@@ -5,6 +5,7 @@
  * Copyright (c) 2020-Present Datadog, Inc.
  */
 require(`../../.pnp.js`).setup();
+require(`@babel/register`)({extensions: [`.ts`, `.js`]});
 
 const {npath} = require(`@yarnpkg/fslib`);
 
