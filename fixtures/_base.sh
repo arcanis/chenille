@@ -1,7 +1,7 @@
 MASTER=master
 MERGE_QUEUE=merge-queue
 
-AUTHOR_CONFIG=-c user.email=postmaster@example.org -c user.name=Example
+AUTHOR_CONFIG="-c user.email=postmaster@example.org -c user.name=Example"
 AUTHOR_OPTION=--author="Example <postmaster@example.org>"
 
 setup_repo() {
