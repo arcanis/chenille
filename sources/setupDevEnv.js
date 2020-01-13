@@ -11,7 +11,7 @@ require(`@babel/register`)({
   root,
   extensions: [`.ts`, `.js`],
   ignore: [
-    path.join(root, `node_modules`),
+    /\/node_modules\//,
   ],
   only: [
     root,
