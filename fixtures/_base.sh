@@ -1,9 +1,12 @@
 MASTER=master
 MERGE_QUEUE=merge-queue
 
+AUTHOR_CONFIG=-c user.email=postmaster@example.org -c user.name=Example
+AUTHOR_OPTION=--author="Example <postmaster@example.org>"
+
 setup_repo() {
     git init .
-    git commit --allow-empty -m 'First commit'
+    git $AUTHOR_CONFIG commit --allow-empty -m 'First commit' "$AUTHOR_OPTION"
     git checkout -b "$MERGE_QUEUE"
     git checkout "$MASTER"
 

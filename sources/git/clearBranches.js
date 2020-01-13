@@ -11,7 +11,7 @@ exports.clearBranches = async (git, ...branches) => {
     let branchExists = true;
     try {
       await git(`rev-parse`, `--verify`, branch);
-    } catch {
+    } catch (err) {
       branchExists = false;
     }
 
