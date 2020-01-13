@@ -13,7 +13,7 @@ describe(`removeFromMergeQueue`, () => {
     makeTemporaryEnv(`outdated-master`, async ({path, git}) => {
       await removeFromMergeQueue(git, 6);
 
-      expect(getAllQueuedPullRequests(git)).resolves.toEqual([
+      await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
         {number: 1, title: 'Feature 1', hash: expect.any(String)},
         {number: 2, title: 'Feature 2', hash: expect.any(String)},
         {number: 3, title: 'Feature 3', hash: expect.any(String)},
@@ -28,7 +28,7 @@ describe(`removeFromMergeQueue`, () => {
     makeTemporaryEnv(`outdated-master`, async ({path, git}) => {
       await removeFromMergeQueue(git, 3);
 
-      expect(getAllQueuedPullRequests(git)).resolves.toEqual([
+      await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
         {number: 1, title: 'Feature 1', hash: expect.any(String)},
         {number: 2, title: 'Feature 2', hash: expect.any(String)},
         {number: 4, title: 'Feature 4', hash: expect.any(String)},
@@ -54,7 +54,7 @@ describe(`removeFromMergeQueue`, () => {
     makeTemporaryEnv(`outdated-master`, async ({path, git}) => {
       await removeFromMergeQueue(git, 1);
 
-      expect(getAllQueuedPullRequests(git)).resolves.toEqual([
+      await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
         {number: 2, title: 'Feature 2', hash: expect.any(String)},
         {number: 3, title: 'Feature 3', hash: expect.any(String)},
         {number: 4, title: 'Feature 4', hash: expect.any(String)},

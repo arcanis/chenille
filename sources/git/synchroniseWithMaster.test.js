@@ -13,7 +13,7 @@ describe(`synchroniseWithMaster`, () => {
     makeTemporaryEnv(`partial-master`, async ({path, git}) => {
       await synchroniseWithMaster(git);
 
-      expect(getAllQueuedPullRequests(git)).resolves.toEqual([
+      await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
         {number: 4, title: 'Feature 4', hash: expect.any(String)},
         {number: 5, title: 'Feature 5', hash: expect.any(String)},
         {number: 6, title: 'Feature 6', hash: expect.any(String)},
