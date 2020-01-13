@@ -25,8 +25,16 @@ exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => 
   await git(`reset`, `--hard`, `${hash}^1`);
 
   for (const pr of prs.slice(killPoint + 1)) {
+    const authorName = await git(`log`, `-1`, `--pretty=format:'%an'`, pr.hash);
+    const authorEmail = await git(`log`, `-1`, `--pretty=format:'%ae'`, pr.hash);
+
+    const author = [
+      `-c`, `user.name=${authorName}`,
+      `-c`, `user.email=${authorEmail}`,
+    ];
+
     try {
-      await git(`cherry-pick`, pr.hash);
+      await git(...author, `cherry-pick`, pr.hash);
     } catch {
       await git(`cherry-pick`, `--abort`);
       cancelled.push({

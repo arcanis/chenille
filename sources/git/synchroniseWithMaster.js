@@ -18,15 +18,15 @@ exports.synchroniseWithMaster = async git => {
   await git(`reset`, `--hard`, git.config.branches.master);
 
   for (const pr of prs) {
+    const authorName = await git(`log`, `-1`, `--pretty=format:'%an'`, pr.hash);
+    const authorEmail = await git(`log`, `-1`, `--pretty=format:'%ae'`, pr.hash);
+
+    const author = [
+      `-c`, `user.name=${authorName}`,
+      `-c`, `user.email=${authorEmail}`,
+    ];
+
     try {
-      const authorName = await git(`log`, `-1`, `--pretty=format:'%an'`, pr.hash);
-      const authorEmail = await git(`log`, `-1`, `--pretty=format:'%ae'`, pr.hash);
-
-      const author = [
-        `-c`, `user.name=${authorName}`,
-        `-c`, `user.email=${authorEmail}`,
-      ];
-
       await git(...author, `cherry-pick`, pr.hash);
     } catch (error) {
       await git(`cherry-pick`, `--abort`);
