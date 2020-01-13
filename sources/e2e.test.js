@@ -4,7 +4,7 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-const cli = require(`./cli`);
+const {default: cli} = require(`./cli`);
 
 const {getAllQueuedPullRequests} = require(`./git/getAllQueuedPullRequests`);
 

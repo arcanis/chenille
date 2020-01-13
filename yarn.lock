@@ -1421,7 +1421,7 @@ __metadata:
     "@yarnpkg/fslib": ^2.0.0-rc.11
     "@yarnpkg/pnpify": ^2.0.0-rc.14
     chalk: ^3.0.0
-    clipanion: ^2.1.5
+    clipanion: ^2.1.6
     eslint: ^6.8.0
     eslint-plugin-header: ^3.0.0
     got: ^9
@@ -1476,12 +1476,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clipanion@npm:^2.1.5":
-  version: 2.1.5
-  resolution: "clipanion@npm:2.1.5"
+"clipanion@npm:^2.1.6":
+  version: 2.1.6
+  resolution: "clipanion@npm:2.1.6"
   dependencies:
     chalk: ^2.4.2
-  checksum: 856e21a3215f5d8696ccfbf663a9b333e149131a91f7906211e55273ef26ed8de339eb4c98a030a641326dce548b7fca52f03837fdc4b6509bb89001879d2f37
+  checksum: d2db6da9eb832e6427c4738003b3cab0dee02b35f361a65b086152a264bc962e49b33a74de140fa70aaf1cd0fa20cb80cc1643ed1b737adf9b70f17fc15e7a8d
   languageName: node
   linkType: hard
 

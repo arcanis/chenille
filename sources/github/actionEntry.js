@@ -5,11 +5,11 @@
  * Copyright (c) 2020-Present Datadog, Inc.
  */
 require(`../../.pnp.js`).setup();
-require(`@babel/register`)({extensions: [`.ts`, `.js`]});
+require(`../setupDevEnv`);
 
 const {npath} = require(`@yarnpkg/fslib`);
 
-const cli = require(`../cli`);
+const {default: cli} = require(`../cli`);
 const {BASE_CONFIGURATION} = require(`../getConfiguration`);
 
 const {getEventFile} = require(`./getEventFile`);
