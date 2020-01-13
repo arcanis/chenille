@@ -1,3 +1,9 @@
+/**
+ * Unless explicitly stated otherwise all files in this repository are licensed under the MIT License.
+ *
+ * This product includes software developed at Datadog (https://www.datadoghq.com/).
+ * Copyright (c) 2020-Present Datadog, Inc.
+ */
 exports.sendToMergeQueue = async (git, pr, hash) => {
   try {
     const authorName = await git(`log`, `-1`, `--pretty=format:'%an'`, hash);

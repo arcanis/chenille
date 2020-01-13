@@ -13,5 +13,11 @@
     "jest": "^24.9.0",
     "js-yaml": "^3.13.1",
     "yup": "^0.27.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^2.15.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-header": "^3.0.0",
+    "typescript": "^3.7.4"
   }
 }
