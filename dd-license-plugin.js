@@ -18,7 +18,7 @@ module.exports = {
         const fetcher = configuration.makeFetcher();
         const fetcherOptions = {fetcher, project, cache, checksums: new Map(), report: new ThrowReport()};
 
-        const lines = [`Component,Origin,License,Copyright\n`];
+        const lines = [];
 
         for (const locator of project.storedPackages.values()) {
           if (structUtils.isVirtualLocator(locator))
@@ -43,10 +43,10 @@ module.exports = {
         }
 
         lines.sort();
-        const csv = lines.join(``);
+        const csv = `Component,Origin,License,Copyright\n` + lines.join(``);
 
         const csvFile = ppath.join(project.cwd, `LICENSE-3rdparty.csv`);
-        await xfs.writeFilePromise(csvFile, csv);
+        await xfs.changeFilePromise(csvFile, csv);
       },
     },
   }),

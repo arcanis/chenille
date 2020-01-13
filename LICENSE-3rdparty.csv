@@ -1,3 +1,4 @@
+Component,Origin,License,Copyright
 @babel/code-frame@npm:7.5.5,https://yarnpkg.com/package/@babel/code-frame,MIT,
 @babel/code-frame@npm:7.8.0,https://yarnpkg.com/package/@babel/code-frame,MIT,
 @babel/core@npm:7.7.4,https://yarnpkg.com/package/@babel/core,MIT,
@@ -73,7 +74,6 @@
 @yarnpkg/fslib@npm:2.0.0-rc.14,https://yarnpkg.com/package/@yarnpkg/fslib,undefined,
 @yarnpkg/libzip@npm:2.0.0-rc.5,https://yarnpkg.com/package/@yarnpkg/libzip,undefined,
 @yarnpkg/pnpify@npm:2.0.0-rc.14,https://yarnpkg.com/package/@yarnpkg/pnpify,undefined,
-Component,Origin,License,Copyright
 abab@npm:2.0.3,https://yarnpkg.com/package/abab,BSD-3-Clause,
 abbrev@npm:1.1.1,https://yarnpkg.com/package/abbrev,ISC,
 acorn-globals@npm:4.3.4,https://yarnpkg.com/package/acorn-globals,MIT,
