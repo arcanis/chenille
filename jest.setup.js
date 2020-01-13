@@ -14,20 +14,25 @@ global.makeTemporaryEnv = (fixture, cb) => {
     const {openRepository} = require(`./sources/git/openRepository`);
     const git = await openRepository(path);
 
+    const mocks = {};
+
+    const {makeDriver} = require(`./sources/mock/makeDriver`);
+    const driver = makeDriver(mocks);
+
     const context = process.env.FORWARD_STREAMS ? {
       cwd: path,
-      driver: require(`./sources/mock/driver`),
+      driver,
       stdin: process.stdin,
       stdout: process.stdout,
       stderr: process.stderr,
     } : {
       cwd: path,
-      driver: require(`./sources/mock/driver`),
+      driver,
       stdin: new PassThrough(),
       stdout: new PassThrough(),
       stderr: new PassThrough(),
     };
 
-    await cb({path, git, context});
+    await cb({path, git, mocks, context});
   };
 };
