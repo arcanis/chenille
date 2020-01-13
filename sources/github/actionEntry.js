@@ -7,10 +7,10 @@
 require(`../../.pnp.js`).setup();
 require(`../setupDevEnv`);
 
+const {npath} = require(`@yarnpkg/fslib`);
+
 const {default: cli} = require(`../cli`);
 const {BASE_CONFIGURATION} = require(`../getConfiguration`);
-
-const {npath} = require(`@yarnpkg/fslib`);
 
 const {getEventFile} = require(`./getEventFile`);
 

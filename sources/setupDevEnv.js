@@ -7,13 +7,13 @@
 const path = require(`path`);
 const root = path.dirname(__dirname);
 
-console.log(`Setup of @babel/register done`);
-process.env.DEBUG = `*`;
-
 require(`@babel/register`)({
   root,
   extensions: [`.ts`, `.js`],
+  ignore: [
+    path.join(root, `node_modules`),
+  ],
   only: [
     root,
-  ]
+  ],
 });
