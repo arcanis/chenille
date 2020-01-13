@@ -21,7 +21,7 @@ cli.register(require(`./commands/SyncAgainstQueue`));
 cli.register(require(`./commands/Cancel`));
 cli.register(require(`./commands/Queue`));
 
-export default cli;
+module.exports = cli;
 
 if (process.mainModule === module) {
   cli.runExit(process.argv.slice(2), {
