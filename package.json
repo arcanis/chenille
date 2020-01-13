@@ -21,6 +21,7 @@
     "typescript": "^3.7.4"
   },
   "scripts": {
-    "format": "yarn eslint sources --fix"
+    "eslint": "eslint sources",
+    "format": "yarn eslint --fix"
   }
 }
