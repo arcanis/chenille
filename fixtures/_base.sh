@@ -26,7 +26,7 @@ send_to_merge_queue() {
     git checkout "$MERGE_QUEUE"
     git merge --squash "$2"
     printf "%s\n\n%s" "$1" "$(cat .git/SQUASH_MSG)" > .git/SQUASH_MSG
-    git commit -F .git/SQUASH_MSG
+    git $AUTHOR_CONFIG commit -F .git/SQUASH_MSG "$AUTHOR_OPTION"
 }
 
 commit_merge_queue() {
