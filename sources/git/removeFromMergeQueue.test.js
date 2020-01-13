@@ -52,7 +52,9 @@ describe(`removeFromMergeQueue`, () => {
   it(
     `should shift a pull request at the start of the queue`,
     makeTemporaryEnv(`outdated-master`, async ({path, git}) => {
+      console.log(await getAllQueuedPullRequests(git));
       await removeFromMergeQueue(git, 1);
+      console.log(await getAllQueuedPullRequests(git));
 
       await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
         {number: 2, title: 'Feature 2', hash: expect.any(String)},
