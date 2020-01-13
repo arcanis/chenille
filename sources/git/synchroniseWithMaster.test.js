@@ -26,7 +26,7 @@ describe(`synchroniseWithMaster`, () => {
     makeTemporaryEnv(`outdated-master`, async ({path, git}) => {
       const before = await getAllQueuedPullRequests(git);
       await git(`checkout`, `master`);
-      await git(`commit`, `-m`, `Reset master`, `--allow-empty`);
+      await git(`-c`, `user.name=Example`, `-c`, `user.email=postmaster@example.org`, `commit`, `-m`, `Reset master`, `--allow-empty`, `--author=Example <postmaster@example.org>`);
       await synchroniseWithMaster(git);
       const after = await getAllQueuedPullRequests(git);
 
