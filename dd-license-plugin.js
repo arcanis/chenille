@@ -18,9 +18,12 @@ module.exports = {
         const fetcher = configuration.makeFetcher();
         const fetcherOptions = {fetcher, project, cache, checksums: new Map(), report: new ThrowReport()};
 
-        const lines = [];
+        const lines = [`Component,Origin,License,Copyright\n`];
 
         for (const locator of project.storedPackages.values()) {
+          if (structUtils.isVirtualLocator(locator))
+            continue;
+
           const fetchResult = await fetcher.fetch(locator, fetcherOptions);
 
           let manifest;
@@ -32,10 +35,11 @@ module.exports = {
             }
           }
 
+          const ident = structUtils.stringifyIdent(locator);
           const name = structUtils.stringifyLocator(locator);
           const license = manifest.raw.license;
 
-          lines.push(`${name},https://yarnpkg.com/package?${encodeURIComponent(name)},${license},\n`);
+          lines.push(`${name},https://yarnpkg.com/package/${ident},${license},\n`);
         }
 
         lines.sort();
