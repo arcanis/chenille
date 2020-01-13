@@ -13,4 +13,7 @@ process.env.DEBUG = `*`;
 require(`@babel/register`)({
   root,
   extensions: [`.ts`, `.js`],
+  only: [
+    root,
+  ]
 });
