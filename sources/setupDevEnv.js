@@ -5,5 +5,5 @@
  * Copyright (c) 2020-Present Datadog, Inc.
  */
 require(`@babel/register`)({
-  extensions: [`.ts`, `js`],
+  extensions: [`.ts`, `.js`],
 });
