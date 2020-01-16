@@ -7,4 +7,4 @@
 require(`../../.pnp.js`).setup();
 require(`../setupDevEnv`);
 
-require(`./actionEntry`);
+require(`./main`);
