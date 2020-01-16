@@ -43,7 +43,7 @@ class Queue extends Command {
       return cancelled;
     });
 
-    await this.context.driver.sendCancelNotifications(cancelled);
+    await this.context.driver.sendCancelNotifications(git, cancelled);
   }
 }
 
