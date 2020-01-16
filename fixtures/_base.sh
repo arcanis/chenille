@@ -18,6 +18,12 @@ setup_repo() {
     git remote add origin "$ORIGIN"
 }
 
+setup_chenille() {
+    cat > chenille.yml
+    git add chenille.yml
+    git commit -m 'Updates the Chenille configuration'
+}
+
 open_feature() {
     git checkout -b "$1" master
     touch "$1"

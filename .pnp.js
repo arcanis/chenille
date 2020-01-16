@@ -114,6 +114,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-transform-modules-commonjs", "virtual:fda58cfc12203ffa0651892f6bc3c1cc672f9f682ce25c15231a63975784039d80c7d8666d87f0ca2affbb02ca38f8d7908c0aa2a5feb0320573bc8f367cd8c2#npm:7.8.0"],
             ["@babel/preset-typescript", "virtual:fda58cfc12203ffa0651892f6bc3c1cc672f9f682ce25c15231a63975784039d80c7d8666d87f0ca2affbb02ca38f8d7908c0aa2a5feb0320573bc8f367cd8c2#npm:7.8.0"],
             ["@babel/register", "virtual:fda58cfc12203ffa0651892f6bc3c1cc672f9f682ce25c15231a63975784039d80c7d8666d87f0ca2affbb02ca38f8d7908c0aa2a5feb0320573bc8f367cd8c2#npm:7.8.0"],
+            ["@types/got", "npm:9.6.9"],
             ["@types/js-yaml", "npm:3.12.1"],
             ["@types/node", "npm:13.1.6"],
             ["@typescript-eslint/parser", "virtual:fda58cfc12203ffa0651892f6bc3c1cc672f9f682ce25c15231a63975784039d80c7d8666d87f0ca2affbb02ca38f8d7908c0aa2a5feb0320573bc8f367cd8c2#npm:2.15.0"],
@@ -916,6 +917,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"
         }]
       ]],
+      ["@types/got", [
+        ["npm:9.6.9", {
+          "packageLocation": "./.yarn/cache/@types-got-npm-9.6.9-117116e984-1.zip/node_modules/@types/got/",
+          "packageDependencies": [
+            ["@types/got", "npm:9.6.9"],
+            ["@types/node", "npm:13.1.6"],
+            ["@types/tough-cookie", "npm:2.3.6"],
+            ["form-data", "npm:2.5.1"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
       ["@types/istanbul-lib-coverage", [
         ["npm:2.0.1", {
           "packageLocation": "./.yarn/cache/@types-istanbul-lib-coverage-npm-2.0.1-c8b87e4b03-1.zip/node_modules/@types/istanbul-lib-coverage/",
@@ -978,6 +991,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-stack-utils-npm-1.0.1-e2f2f7a882-1.zip/node_modules/@types/stack-utils/",
           "packageDependencies": [
             ["@types/stack-utils", "npm:1.0.1"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["@types/tough-cookie", [
+        ["npm:2.3.6", {
+          "packageLocation": "./.yarn/cache/@types-tough-cookie-npm-2.3.6-300e192220-1.zip/node_modules/@types/tough-cookie/",
+          "packageDependencies": [
+            ["@types/tough-cookie", "npm:2.3.6"]
           ],
           "linkType": "HARD"
         }]
@@ -1742,6 +1764,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-transform-modules-commonjs", "virtual:fda58cfc12203ffa0651892f6bc3c1cc672f9f682ce25c15231a63975784039d80c7d8666d87f0ca2affbb02ca38f8d7908c0aa2a5feb0320573bc8f367cd8c2#npm:7.8.0"],
             ["@babel/preset-typescript", "virtual:fda58cfc12203ffa0651892f6bc3c1cc672f9f682ce25c15231a63975784039d80c7d8666d87f0ca2affbb02ca38f8d7908c0aa2a5feb0320573bc8f367cd8c2#npm:7.8.0"],
             ["@babel/register", "virtual:fda58cfc12203ffa0651892f6bc3c1cc672f9f682ce25c15231a63975784039d80c7d8666d87f0ca2affbb02ca38f8d7908c0aa2a5feb0320573bc8f367cd8c2#npm:7.8.0"],
+            ["@types/got", "npm:9.6.9"],
             ["@types/js-yaml", "npm:3.12.1"],
             ["@types/node", "npm:13.1.6"],
             ["@typescript-eslint/parser", "virtual:fda58cfc12203ffa0651892f6bc3c1cc672f9f682ce25c15231a63975784039d80c7d8666d87f0ca2affbb02ca38f8d7908c0aa2a5feb0320573bc8f367cd8c2#npm:2.15.0"],
@@ -2817,6 +2840,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/form-data-npm-2.3.3-c016cc11c0-1.zip/node_modules/form-data/",
           "packageDependencies": [
             ["form-data", "npm:2.3.3"],
+            ["asynckit", "npm:0.4.0"],
+            ["combined-stream", "npm:1.0.8"],
+            ["mime-types", "npm:2.1.25"]
+          ],
+          "linkType": "HARD"
+        }],
+        ["npm:2.5.1", {
+          "packageLocation": "./.yarn/cache/form-data-npm-2.5.1-47256351b5-1.zip/node_modules/form-data/",
+          "packageDependencies": [
+            ["form-data", "npm:2.5.1"],
             ["asynckit", "npm:0.4.0"],
             ["combined-stream", "npm:1.0.8"],
             ["mime-types", "npm:2.1.25"]

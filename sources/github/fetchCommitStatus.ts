@@ -4,16 +4,26 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-const got = require(`got`);
+import got from 'got';
 
-exports.fetchCommitStatus = async (git, prs) => {
-  const [owner, name] = process.env.GITHUB_REPOSITORY.split(/\//);
+import {DetailedPr, Git, Pr, StatusMap} from '../types';
+
+export const fetchCommitStatus = async (git: Git, prs: Pr[]): Promise<DetailedPr[]> => {
+  const repoString = process.env.GITHUB_REPOSITORY;
+  if (typeof repoString === `undefined`)
+    throw new Error(`Assertion failed: Missing GITHUB_REPOSITORY environment variable`);
+  
+  const repoToken = process.env.GITHUB_TOKEN;
+  if (typeof repoToken === `undefined`)
+    throw new Error(`Assertion failed: Missing GITHUB_TOKEN environment variable`);
+
+  const [owner, name] = repoString.split(/\//);
 
   const {body} = await got.post(`https://api.github.com/graphql`, {
     json: true,
     headers: {
       Accept: `application/vnd.github.antiope-preview`,
-      Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
+      Authorization: `bearer ${repoToken}`,
     },
     body: {
       query: `query {
@@ -60,7 +70,7 @@ exports.fetchCommitStatus = async (git, prs) => {
   const {data} = body;
   console.log(require(`util`).inspect(data, {depth: Infinity}));
 
-  const getStatusMapFor = hash => {
+  const getStatusMapFor = (hash: string): StatusMap => {
     const entry = data.repository[`hash_${hash}`];
     const statusMap = new Map();
 

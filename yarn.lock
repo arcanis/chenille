@@ -743,6 +743,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/got@npm:^9.6.9":
+  version: 9.6.9
+  resolution: "@types/got@npm:9.6.9"
+  dependencies:
+    "@types/node": "*"
+    "@types/tough-cookie": "*"
+    form-data: ^2.5.0
+  checksum: dd08655a302c9ae5fcb29dd24d9fd24a75fa2e16b097cefdf0e02f6c0d09c2a995d918e31a39125f9fc4c67dda61e2b63af4e6094e55ed249eb87faf199ccbe9
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0":
   version: 2.0.1
   resolution: "@types/istanbul-lib-coverage@npm:2.0.1"
@@ -783,7 +794,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^13.1.6":
+"@types/node@npm:*, @types/node@npm:^13.1.6":
   version: 13.1.6
   resolution: "@types/node@npm:13.1.6"
   checksum: 8a405a40d9a901fa44ceda01c794446b910461d0488bd9d02538e92a207376919a68a128d9b755500219f3afb24fe3305f60fc625113f74e87c206a3a52fd25a
@@ -794,6 +805,13 @@ __metadata:
   version: 1.0.1
   resolution: "@types/stack-utils@npm:1.0.1"
   checksum: 5dc06076f3ed8dfa61f65584b9fb956079fc45c6b2ae2902e608df3b1494c0c4b35d29e63c51427cce2ec28925076d0f393ec6faf3a003dad24dc1b8a578f96b
+  languageName: node
+  linkType: hard
+
+"@types/tough-cookie@npm:*":
+  version: 2.3.6
+  resolution: "@types/tough-cookie@npm:2.3.6"
+  checksum: 1d6b81de1d3812324f1f71e632ad30750a9a36d9e9cbab733c47b504aabf3c061a74ea665df1a4e20d0a5d82730992411384ed2700a5b97358031cf235cfa304
   languageName: node
   linkType: hard
 
@@ -1455,6 +1473,7 @@ __metadata:
     "@babel/plugin-transform-modules-commonjs": ^7.8.0
     "@babel/preset-typescript": ^7.8.0
     "@babel/register": ^7.8.0
+    "@types/got": ^9.6.9
     "@types/js-yaml": ^3.12.1
     "@types/node": ^13.1.6
     "@typescript-eslint/parser": ^2.15.0
@@ -2412,6 +2431,17 @@ __metadata:
   version: 0.6.1
   resolution: "forever-agent@npm:0.6.1"
   checksum: c93124c19389fc884c5caa376c76789789a9f7d94a6079214abfc87a2b49c2b6388e3bc2214b8f1442f1e92ca574cc48f7dd6b9a52bb199f3cec75fd5ff59f7f
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^2.5.0":
+  version: 2.5.1
+  resolution: "form-data@npm:2.5.1"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.6
+    mime-types: ^2.1.12
+  checksum: 91ce55d0e8ef6da84da9e8b6f483a542451e802c5e31547390ee6257687f990057b60dda2b3f011cf2e4ca85c78bf5ad53f3d6826fe0689ece10fad3daa43987
   languageName: node
   linkType: hard
 

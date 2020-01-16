@@ -10,5 +10,6 @@ export const makeDriver: (mocks: any) => Driver = mocks => ({
   fetchCommitStatus: require(`./fetchCommitStatus`).fetchCommitStatus.bind(null, mocks),
   fetchFromOrigin: require(`./fetchFromOrigin`).fetchFromOrigin.bind(null, mocks),
   pushToOrigin: require(`./pushToOrigin`).pushToOrigin.bind(null, mocks),
+  sendMergeNotifications: require(`./sendMergeNotifications`).sendMergeNotifications.bind(null, mocks),
   sendCancelNotifications: require(`./sendCancelNotifications`).sendCancelNotifications.bind(null, mocks),
 });

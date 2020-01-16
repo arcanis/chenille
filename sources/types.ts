@@ -6,6 +6,9 @@
  */
 export interface Configuration {
     requiredStatus?: string[];
+    labels: {
+        merged?: string;
+    },
     branches: {
         master: string;
         mergeQueue: string;
@@ -16,7 +19,8 @@ export interface Driver {
     fetchCommitStatus(git: Git, prs: Pr[]): Promise<DetailedPr[]>;
     fetchFromOrigin(git: Git, ...names: string[]): Promise<void>;
     pushToOrigin(git: Git, ...branches: string[]): Promise<void>;
-    sendCancelNotifications(prs: CanceledPr[]): Promise<void>;
+    sendMergeNotifications(git: Git, prs: Pr[]): Promise<void>;
+    sendCancelNotifications(git: Git, prs: CanceledPr[]): Promise<void>;
 }
 
 export interface Git {

@@ -44,6 +44,12 @@ describe(`E2E Tests`, () => {
       await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
         {number: 1, title: 'Feature 1', hash: expect.any(String)},
       ]);
+
+      expect(mocks.mergeNotifications).toEqual([
+      ]);
+
+      expect(mocks.cancelNotifications).toEqual([
+      ]);
     }),
   );
 
@@ -66,6 +72,15 @@ describe(`E2E Tests`, () => {
       ]);
 
       await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
+      ]);
+
+      expect(mocks.mergeNotifications).toEqual([
+        expect.objectContaining({
+          number: 1,
+        }),
+      ]);
+
+      expect(mocks.cancelNotifications).toEqual([
       ]);
     }),
   );
@@ -90,11 +105,106 @@ describe(`E2E Tests`, () => {
       await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
       ]);
 
-      expect(mocks.notifications).toEqual([
+      expect(mocks.mergeNotifications).toEqual([
+      ]);
+
+      expect(mocks.cancelNotifications).toEqual([
         expect.objectContaining({
           number: 1,
-          reason: `Test results are red`,
+          reason: expect.stringMatching(`Test results are red`),
         }),
+      ]);
+    }),
+  );
+
+  it(
+    `should ignore failing statuses that aren't in requireStatus`,
+    makeTemporaryEnv(`features-in-progress-w-require-status`, async ({path, git, context, mocks}) => {
+      await git(`push`, `origin`, `feature1:pull/1/head`);
+      await cli.run([`dispatch`, `comment`, `to`, `1`, `--title=Feature 1`, `--body=/chenille`], context);
+
+      mocks.status = new Map([
+        [1, new Map([
+          [`relevant-test-1`, true],
+          [`relevant-test-2`, true],
+          [`irrelevant-test`, false],
+        ])],
+      ]);
+
+      await cli.run([`sync`, `against`, `queue`], context);
+
+      await expect(getAllQueuedPullRequests(git, `master`)).resolves.toEqual([
+        {number: 1, title: 'Feature 1', hash: expect.any(String)},
+      ]);
+
+      await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
+      ]);
+
+      expect(mocks.mergeNotifications).toEqual([
+        expect.objectContaining({
+          number: 1,
+        }),
+      ]);
+
+      expect(mocks.cancelNotifications).toEqual([
+      ]);
+    }),
+  );
+
+  it(
+    `shouldn't merge until all the required statuses have arrived (no statuses available)`,
+    makeTemporaryEnv(`features-in-progress-w-require-status`, async ({path, git, context, mocks}) => {
+      await git(`push`, `origin`, `feature1:pull/1/head`);
+      await cli.run([`dispatch`, `comment`, `to`, `1`, `--title=Feature 1`, `--body=/chenille`], context);
+
+      mocks.status = new Map([
+        [1, new Map([
+        ])],
+      ]);
+
+      await cli.run([`sync`, `against`, `queue`], context);
+
+      await expect(getAllQueuedPullRequests(git, `master`)).resolves.toEqual([
+      ]);
+
+      await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
+        {number: 1, title: 'Feature 1', hash: expect.any(String)},
+      ]);
+
+      expect(mocks.mergeNotifications).toEqual([
+      ]);
+
+      expect(mocks.cancelNotifications).toEqual([
+      ]);
+    }),
+  );
+
+  it(
+    `shouldn't merge until all the required statuses have arrived (some statuses available)`,
+    makeTemporaryEnv(`features-in-progress-w-require-status`, async ({path, git, context, mocks}) => {
+      console.log(path);
+      await git(`push`, `origin`, `feature1:pull/1/head`);
+      await cli.run([`dispatch`, `comment`, `to`, `1`, `--title=Feature 1`, `--body=/chenille`], context);
+
+      mocks.status = new Map([
+        [1, new Map([
+          [`relevant-test-1`, true],
+        ])],
+      ]);
+
+      await cli.run([`sync`, `against`, `queue`], context);
+
+      await expect(getAllQueuedPullRequests(git, `master`)).resolves.toEqual([
+      ]);
+
+      await expect(getAllQueuedPullRequests(git)).resolves.toEqual([
+        {number: 1, title: 'Feature 1', hash: expect.any(String)},
+      ]);
+
+      expect(mocks.mergeNotifications).toEqual([
+      ]);
+
+      expect(mocks.cancelNotifications).toEqual([
       ]);
     }),
   );
@@ -130,10 +240,10 @@ describe(`E2E Tests`, () => {
           ]);
 
           if (status !== null) {
-            expect(mocks.notifications).toEqual([
+            expect(mocks.cancelNotifications).toEqual([
               expect.objectContaining({
                 number: 1,
-                reason: `Test results are red`,
+                reason: expect.stringMatching(`Test results are red`),
               }),
             ]);
           }

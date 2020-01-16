@@ -26,6 +26,7 @@ export async function getConfiguration(git: Git): Promise<Configuration> {
     : {};
 
   return {
+    labels: {},
     ...userConfiguration,
     ...exports.BASE_CONFIGURATION,
   };
