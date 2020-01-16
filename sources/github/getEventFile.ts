@@ -4,12 +4,12 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-const {UsageError} = require(`clipanion`);
-const {readFileSync} = require(`fs`);
+import {UsageError} from 'clipanion';
+import {readFileSync} from 'fs';
 
-exports.getEventFile = () => {
+export const getEventFile = () => {
   if (!process.env.GITHUB_EVENT_PATH)
-    throw new UsageError(`Missing GitHub event file in the environment`);
+    throw new UsageError(`Assertion failed: Missing GITHUB_EVENT_PATH environment variable`);
 
   const content = readFileSync(process.env.GITHUB_EVENT_PATH, `utf8`);
   const data = JSON.parse(content);
