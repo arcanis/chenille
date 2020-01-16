@@ -32,7 +32,9 @@ describe(`E2E Tests`, () => {
 
       mocks.status = new Map([
         [1, new Map([
-          [`my-status`, null],
+          [`my-status`, {
+            ok: null,
+          }],
         ])],
       ]);
 
@@ -61,7 +63,9 @@ describe(`E2E Tests`, () => {
 
       mocks.status = new Map([
         [1, new Map([
-          [`my-status`, true],
+          [`my-status`, {
+            ok: true,
+          }],
         ])],
       ]);
 
@@ -93,7 +97,9 @@ describe(`E2E Tests`, () => {
 
       mocks.status = new Map([
         [1, new Map([
-          [`my-status`, false],
+          [`my-status`, {
+            ok: false,
+          }],
         ])],
       ]);
 
@@ -125,9 +131,15 @@ describe(`E2E Tests`, () => {
 
       mocks.status = new Map([
         [1, new Map([
-          [`relevant-test-1`, true],
-          [`relevant-test-2`, true],
-          [`irrelevant-test`, false],
+          [`relevant-test-1`, {
+            ok: true,
+          }],
+          [`relevant-test-2`, {
+            ok: true,
+          }],
+          [`irrelevant-test`, {
+            ok: false,
+          }],
         ])],
       ]);
 
@@ -182,13 +194,14 @@ describe(`E2E Tests`, () => {
   it(
     `shouldn't merge until all the required statuses have arrived (some statuses available)`,
     makeTemporaryEnv(`features-in-progress-w-require-status`, async ({path, git, context, mocks}) => {
-      console.log(path);
       await git(`push`, `origin`, `feature1:pull/1/head`);
       await cli.run([`dispatch`, `comment`, `to`, `1`, `--title=Feature 1`, `--body=/chenille`], context);
 
       mocks.status = new Map([
         [1, new Map([
-          [`relevant-test-1`, true],
+          [`relevant-test-1`, {
+            ok: true,
+          }],
         ])],
       ]);
 
@@ -222,10 +235,14 @@ describe(`E2E Tests`, () => {
 
           mocks.status = new Map([
             [1, new Map([
-              [`my-status`, status],
+              [`my-status`, {
+                ok: status,
+              }],
             ])],
             [2, new Map([
-              [`my-status`, followupStatus],
+              [`my-status`, {
+                ok: followupStatus,
+              }],
             ])],
           ]);
 
