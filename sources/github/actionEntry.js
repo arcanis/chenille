@@ -18,7 +18,7 @@ const eventFile = getEventFile();
 
 const context = {
   cwd: npath.toPortablePath(process.env.GITHUB_WORKSPACE),
-  driver: require(`./driver`),
+  driver: require(`./driver`).driver,
   stdin: process.stdin,
   stdout: process.stdout,
   stderr: process.stderr,
