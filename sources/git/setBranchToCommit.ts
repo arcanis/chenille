@@ -4,7 +4,9 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.setBranchToCommit = async (git, branchName, hash) => {
+import {Git} from '../types';
+
+export const setBranchToCommit = async (git: Git, branchName: string, hash: string) => {
   const currentBranch = await git(`rev-parse`, `--abbrev-ref`, `HEAD`);
 
   if (currentBranch === branchName) {

@@ -4,7 +4,7 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.retryIfStale = async (cb) => {
+export const retryIfStale = async <T>(cb: () => Promise<T>) => {
   do {
     try {
       return await cb();
@@ -16,4 +16,6 @@ exports.retryIfStale = async (cb) => {
       }
     }
   } while (false);
+  
+  throw new Error(`Unreachable`);
 };

@@ -4,7 +4,9 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.sendToMergeQueue = async (git, pr, hash) => {
+import {Git, Pr} from '../types';
+
+export const sendToMergeQueue = async (git: Git, pr: Pr, hash: string) => {
   try {
     const authorName = await git(`log`, `-1`, `--pretty=format:'%an'`, hash);
     const authorEmail = await git(`log`, `-1`, `--pretty=format:'%ae'`, hash);

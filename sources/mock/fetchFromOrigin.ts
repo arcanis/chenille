@@ -4,9 +4,8 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.sendCancelNotifications = async (mocks, prs) => {
-    if (!mocks.notifications)
-        mocks.notifications = [];
+import {Git} from '../types';
 
-    mocks.notifications.push(...prs);
+export const fetchFromOrigin = async (mocks: any, git: Git, ...args: string[]) => {
+    await git(`fetch`, `origin`, ...args);
 };

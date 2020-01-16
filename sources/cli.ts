@@ -7,8 +7,12 @@
 import {PortablePath, npath} from '@yarnpkg/fslib';
 import {BaseContext, Cli} from 'clipanion';
 
+import {makeDriver} from './mock/makeDriver';
+import {Driver} from './types';
+
 export type Context = BaseContext & {
   cwd: PortablePath,
+  driver: Driver,
 };
 
 const cli = new Cli<Context>({binaryName: `yarn chenille`});
@@ -26,6 +30,7 @@ export default cli;
 if (process.mainModule === module) {
   cli.runExit(process.argv.slice(2), {
     cwd: npath.toPortablePath(process.cwd()),
+    driver: makeDriver({}),
     stdin: process.stdin,
     stdout: process.stdout,
     stderr: process.stderr,

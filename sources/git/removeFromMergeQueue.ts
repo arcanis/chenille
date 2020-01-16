@@ -4,17 +4,19 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-const {getAllQueuedPullRequests} = require(`./getAllQueuedPullRequests`);
+import {Git, CanceledPr} from '../types';
 
-exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => {
-  const cancelled = [];
+import {getAllQueuedPullRequests} from './getAllQueuedPullRequests';
+
+export const removeFromMergeQueue = async (git: Git, removedPr: number, {reason = `n/a`}: {reason?: string} = {}) => {
+  const canceled: CanceledPr[] = [];
   const prs = await getAllQueuedPullRequests(git);
 
   const killPoint = prs.findIndex(({number}) => number == removedPr);
   if (killPoint === -1)
-    return cancelled;
+    return canceled;
 
-  cancelled.push({
+  canceled.push({
     ...prs[killPoint],
     reason,
   });
@@ -37,7 +39,7 @@ exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => 
       await git(...author, `cherry-pick`, pr.hash);
     } catch {
       await git(`cherry-pick`, `--abort`);
-      cancelled.push({
+      canceled.push({
         ...pr,
         reason: `Rebase on top of its new parent (${await git(`rev-parse`, `--short`, `HEAD`)}) failed`,
       });
@@ -48,5 +50,5 @@ exports.removeFromMergeQueue = async (git, removedPr, {reason = `n/a`} = {}) => 
   await git(`reset`, `--hard`, `temp/${git.config.branches.mergeQueue}`);
   await git(`branch`, `-D`, `temp/${git.config.branches.mergeQueue}`);
 
-  return cancelled;
+  return canceled;
 };

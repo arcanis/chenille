@@ -4,7 +4,9 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.clearBranches = async (git, ...branches) => {
+import {Git} from '../types';
+
+export const clearBranches = async (git: Git, ...branches: string[]) => {
   await git(`checkout`, `--detach`);
 
   for (const branch of branches) {

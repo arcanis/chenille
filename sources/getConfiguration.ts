@@ -6,15 +6,7 @@
  */
 import yaml from 'js-yaml';
 
-import {Git} from './git/openRepository';
-
-export interface Configuration {
-  requiredStatus?: string[];
-  branches: {
-    master: string;
-    mergeQueue: string;
-  };
-} 
+import {Configuration, Git} from './types';
 
 export const BASE_CONFIGURATION = {
   branches: {

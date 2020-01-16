@@ -4,7 +4,9 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.fetchCommitStatus = function (mocks, git, prs) {
+import {Git, Pr} from '../types';
+
+export const fetchCommitStatus = (mocks: any, git: Git, prs: Array<Pr>) => {
     return prs.map(pr => ({
         ...pr,
         statusMap: mocks.status

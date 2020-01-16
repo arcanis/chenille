@@ -4,11 +4,13 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-const {getAllQueuedPullRequests} = require(`./getAllQueuedPullRequests`);
-const {isSynchronisedWithMaster} = require(`./isSynchronisedWithMaster`);
+import {CanceledPr, Git} from '../types';
 
-exports.synchroniseWithMaster = async git => {
-  const canceled = [];
+import {getAllQueuedPullRequests} from './getAllQueuedPullRequests';
+import {isSynchronisedWithMaster} from './isSynchronisedWithMaster';
+
+exports.synchroniseWithMaster = async (git: Git) => {
+  const canceled: CanceledPr[] = [];
   if (await isSynchronisedWithMaster(git))
     return canceled;
 

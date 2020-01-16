@@ -4,7 +4,9 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-export function validateStatusMap(statusMap: Map<string, boolean | null>) {
+import {StatusMap} from './types';
+
+export function validateStatusMap(statusMap: StatusMap) {
   let pending = false;
 
   for (const status of statusMap.values()) {

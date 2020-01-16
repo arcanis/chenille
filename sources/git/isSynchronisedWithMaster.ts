@@ -4,6 +4,8 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.pushToOrigin = async (mocks, git, ...args) => {
-    await git(`push`, `origin`, ...args);
+import {Git} from '../types';
+
+export const isSynchronisedWithMaster = async (git: Git) => {
+  return Number(await git(`rev-list`, `--count`, `${git.config.branches.mergeQueue}..${git.config.branches.master}`)) === 0;
 };

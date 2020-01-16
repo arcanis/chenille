@@ -4,7 +4,9 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.makeDriver = mocks => ({
+import {Driver} from '../types';
+
+export const makeDriver: (mocks: any) => Driver = mocks => ({
   fetchCommitStatus: require(`./fetchCommitStatus`).fetchCommitStatus.bind(null, mocks),
   fetchFromOrigin: require(`./fetchFromOrigin`).fetchFromOrigin.bind(null, mocks),
   pushToOrigin: require(`./pushToOrigin`).pushToOrigin.bind(null, mocks),

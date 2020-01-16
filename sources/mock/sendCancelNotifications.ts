@@ -4,6 +4,11 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.isSynchronisedWithMaster = async git => {
-  return Number(await git(`rev-list`, `--count`, `${git.config.branches.mergeQueue}..${git.config.branches.master}`)) === 0;
+import {CanceledPr} from '../types';
+
+exports.sendCancelNotifications = async (mocks: any, prs: CanceledPr[]) => {
+    if (!mocks.notifications)
+        mocks.notifications = [];
+
+    mocks.notifications.push(...prs);
 };

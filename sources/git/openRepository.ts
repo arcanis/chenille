@@ -9,13 +9,8 @@ import {Writable} from 'stream';
 import chalk from 'chalk';
 import cp from 'child_process';
 
-import {Configuration, getConfiguration} from '../getConfiguration';
-
-export interface Git {
-  (...args: string[]): Promise<string>;
-  prefixSquashMessage(prefix: string): Promise<void>;
-  config: Configuration;
-};
+import {Configuration, Git} from '../types';
+import {getConfiguration} from '../getConfiguration';
 
 export async function openRepository(dir: PortablePath, {stdout}: {stdout?: Writable} = {}): Promise<Git> {
   const nDir = npath.fromPortablePath(dir);

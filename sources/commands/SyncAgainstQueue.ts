@@ -4,27 +4,29 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-const {Command} = require(`clipanion`);
+import {Command} from 'clipanion';
 
-const {clearBranches} = require(`../git/clearBranches`);
-const {getAllQueuedPullRequests} = require(`../git/getAllQueuedPullRequests`);
-const {isSynchronisedWithMaster} = require(`../git/isSynchronisedWithMaster`);
-const {openRepository} = require(`../git/openRepository`);
-const {removeFromMergeQueue} = require(`../git/removeFromMergeQueue`);
-const {retryIfStale} = require(`../git/retryIfStale`);
-const {setBranchToCommit} = require(`../git/setBranchToCommit`)
+import {clearBranches} from '../git/clearBranches';
+import {getAllQueuedPullRequests} from '../git/getAllQueuedPullRequests';
+import {isSynchronisedWithMaster} from '../git/isSynchronisedWithMaster';
+import {openRepository} from '../git/openRepository';
+import {removeFromMergeQueue} from '../git/removeFromMergeQueue';
+import {retryIfStale} from '../git/retryIfStale';
+import {setBranchToCommit} from '../git/setBranchToCommit';
 
-const {normalizeStatusMap} = require(`../normalizeStatusMap`);
-const {validateStatusMap} = require(`../validateStatusMap`);
+import {Context} from '../cli';
+import {normalizeStatusMap} from '../normalizeStatusMap';
+import {CanceledPr} from '../types';
+import {validateStatusMap} from '../validateStatusMap';
 
-class SyncAgainstQueue extends Command {
+class SyncAgainstQueue extends Command<Context> {
   async execute() {
     const git = await openRepository(this.context.cwd, {
       stdout: this.context.stdout,
     });
 
     const cancelled = await retryIfStale(async () => {
-      let cancelled = [];
+      let cancelled: Array<CanceledPr> = [];
 
       await clearBranches(git, git.config.branches.master, git.config.branches.mergeQueue);
 
@@ -50,10 +52,13 @@ class SyncAgainstQueue extends Command {
 
       const prsWithStatus = await this.context.driver.fetchCommitStatus(git, prs);
 
+      console.log(normalizeStatusMap(git, new Map()));
+      console.log(validateStatusMap(normalizeStatusMap(git, new Map())));
+
       for (const pr of prsWithStatus) {
         const originalStatusMap = pr.statusMap;
 
-        pr.statusMap = await normalizeStatusMap(git, pr.statusMap);
+        pr.statusMap = normalizeStatusMap(git, pr.statusMap);
         pr.status = validateStatusMap(pr.statusMap);
 
         this.context.stdout.write(`#${pr.number} - ${pr.title} - ${pr.status}\n`);
@@ -70,7 +75,7 @@ class SyncAgainstQueue extends Command {
       // master by accident (because we'll push w/ force-with-lease).
 
       if (okCount > 0) {
-        this.context.stdout.write(`Synchronizing ${git.config.branches.master} to ${prsWithStatus[okCount - 1].number}`);
+        this.context.stdout.write(`Synchronizing ${git.config.branches.master} to ${prsWithStatus[okCount - 1].number}\n`);
         await setBranchToCommit(git, git.config.branches.master, prsWithStatus[okCount - 1].hash);
       }
 

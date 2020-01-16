@@ -4,8 +4,10 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.getAllQueuedPullRequests = async (git, branch = git.config.branches.mergeQueue) => {
-  const prs = [];
+import {Git, Pr} from '../types';
+
+export const getAllQueuedPullRequests = async (git: Git, branch: string = git.config.branches.mergeQueue) => {
+  const prs: Pr[] = [];
 
   const history = branch !== git.config.branches.master
     ? `${git.config.branches.master}..${branch}`
@@ -20,8 +22,12 @@ exports.getAllQueuedPullRequests = async (git, branch = git.config.branches.merg
     const oneline = lines[t];
     const hash = lines[t + 1];
 
+    const match = oneline.match(/^\[#(\d+)\] (.*)/);
+    if (match === null)
+      throw new Error(`Assertion failed: Expected the commit title to contain a PR number (${oneline})`);
+
     // The first number in the title is the PR number
-    const [, numberStr, title] = oneline.match(/^\[#(\d+)\] (.*)/);
+    const [, numberStr, title] = match;
     const number = parseInt(numberStr, 10);
 
     prs.push({number, title, hash});

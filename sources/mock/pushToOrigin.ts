@@ -4,6 +4,8 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-exports.fetchFromOrigin = async (mocks, git, ...args) => {
-    await git(`fetch`, `origin`, ...args);
+import {Git} from '../types';
+
+exports.pushToOrigin = async (mocks: any, git: Git, ...args: string[]) => {
+    await git(`push`, `origin`, ...args);
 };
