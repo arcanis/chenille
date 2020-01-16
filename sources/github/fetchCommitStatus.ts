@@ -39,6 +39,7 @@ export const fetchCommitStatus = async (git: Git, prs: Pr[]): Promise<DetailedPr
                   contexts {
                     context
                     state
+                    targetUrl
                   }
                 }
                 checkSuites(first: 100) {
@@ -54,6 +55,7 @@ export const fetchCommitStatus = async (git: Git, prs: Pr[]): Promise<DetailedPr
                         text
                         name
                         status
+                        detailsUrl
                         conclusion
                       }
                     }
@@ -72,22 +74,31 @@ export const fetchCommitStatus = async (git: Git, prs: Pr[]): Promise<DetailedPr
 
   const getStatusMapFor = (hash: string): StatusMap => {
     const entry = data.repository[`hash_${hash}`];
-    const statusMap = new Map();
+    const statusMap: StatusMap = new Map();
 
     if (entry.status !== null) {
-      for (const {context, state} of entry.status.contexts) {
+      for (const {context, state, targetUrl} of entry.status.contexts) {
         switch (state) {
           case `SUCCESS`: {
-            statusMap.set(context, true);
+            statusMap.set(context, {
+              href: targetUrl,
+              ok: true,
+            });
           } break;
 
           case `FAILURE`:
           case `ERROR`: {
-            statusMap.set(context, false);
+            statusMap.set(context, {
+              href: targetUrl,
+              ok: false,
+            });
           } break;
 
           default: {
-            statusMap.set(context, null);
+            statusMap.set(context, {
+              href: targetUrl,
+              ok: null,
+            });
           } break;
         }
       }
@@ -98,9 +109,15 @@ export const fetchCommitStatus = async (git: Git, prs: Pr[]): Promise<DetailedPr
         const name = `${checkSuite.app.name} / ${checkRun.name}`;
 
         if (checkRun.status === `COMPLETED`) {
-          statusMap.set(name, checkRun.conclusion === `SUCCESS`);
+          statusMap.set(name, {
+            href: checkRun.detailsUrl,
+            ok: checkRun.conclusion === `SUCCESS`,
+          });
         } else {
-          statusMap.set(name, null);
+          statusMap.set(name, {
+            href: checkRun.detailsUrl,
+            ok: null,
+          });
         }
       }
     }

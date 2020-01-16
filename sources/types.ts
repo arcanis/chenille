@@ -28,9 +28,18 @@ export interface Git {
     prefixSquashMessage(prefix: string): Promise<void>;
     config: Configuration;
 };
+
+export type PrStatus = {
+    ok: true | null;
+} | {
+    ok: false;
+    message: string;
+};  
   
-export type StatusMap =
-    Map<string, boolean | null>;
+export type StatusMap = Map<string, {
+    href: string | undefined,
+    ok: boolean | null,
+}>;
 
 export type Pr = {
     number: number;
@@ -40,7 +49,7 @@ export type Pr = {
 
 export type DetailedPr = Pr & {
     statusMap: StatusMap;
-    status?: boolean | null;
+    status?: PrStatus;
 };
 
 export type CanceledPr = Pr & {

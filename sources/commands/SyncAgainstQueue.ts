@@ -63,7 +63,7 @@ class SyncAgainstQueue extends Command<Context> {
         this.context.stdout.write(`${require(`util`).inspect(originalStatusMap)}\n`);
       }
 
-      while (merged.length < prsWithStatus.length && prsWithStatus[merged.length].status === true)
+      while (merged.length < prsWithStatus.length && prsWithStatus[merged.length].status!.ok === true)
         merged.push(prsWithStatus[merged.length]);
 
       // If the merge queue contains green commits, then we can move
@@ -83,11 +83,19 @@ class SyncAgainstQueue extends Command<Context> {
       // the queue in the hope that the following commits will be
       // green (all the tests will unfortunately have to run anew).
 
-      if (merged.length < prsWithStatus.length && prsWithStatus[merged.length].status === false) {
-        const firstKnownBad = prsWithStatus[merged.length];
+      if (merged.length < prsWithStatus.length) {
+        const nextPr = prsWithStatus[merged.length];
 
-        this.context.stdout.write(`Removing ${firstKnownBad.number}\n`);
-        canceled = await removeFromMergeQueue(git, firstKnownBad.number, {reason: `Test results are red for ${firstKnownBad.hash}; check the commit status for more details`});
+        const nextStatus = nextPr.status;
+        if (typeof nextStatus === `undefined`)
+          throw new Error(`Assertion failed: The PR status should have been set`);
+
+        if (nextStatus.ok === false) {
+          const firstKnownBad = prsWithStatus[merged.length];
+
+          this.context.stdout.write(`Removing ${firstKnownBad.number}\n`);
+          canceled = await removeFromMergeQueue(git, firstKnownBad.number, {reason: `Test results are red for ${firstKnownBad.hash}:\n\n${nextStatus.message}`});
+        }
       }
 
       if (merged.length > 0 || canceled.length > 0) {

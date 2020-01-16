@@ -4,23 +4,36 @@
  * This product includes software developed at Datadog (https://www.datadoghq.com/).
  * Copyright (c) 2020-Present Datadog, Inc.
  */
-import {StatusMap} from './types';
+import {PrStatus, StatusMap} from './types';
 
-export function validateStatusMap(statusMap: StatusMap) {
+export function validateStatusMap(statusMap: StatusMap): PrStatus {
+  const rejectionLines = [];
   let pending = false;
 
-  for (const status of statusMap.values()) {
-    if (status === false)
-      return false;
+  for (const [title, {href, ok}] of statusMap.entries()) {
+    if (ok === false) {
+      if (href != null) {
+        rejectionLines.push(`- ${title}\n`);
+      } else {
+        rejectionLines.push(`- [${title}](${href})\n`);
+      }
+    }
 
-    if (typeof status === `undefined` || status === null) {
+    if (typeof ok === `undefined` || ok === null) {
       pending = true;
     }
   }
 
+  if (rejectionLines.length > 0) {
+    return {
+      ok: false,
+      message: rejectionLines.join(``),
+    }
+  }
+
   if (pending) {
-    return null;
+    return {ok: null};
   } else {
-    return true;
+    return {ok: true};
   }
 };

@@ -11,11 +11,12 @@ export function normalizeStatusMap(git: Git, statusMap: StatusMap) {
     return statusMap;
 
   return new Map(git.config.requiredStatus.map(title => {
-    let result = statusMap.get(title);
+    const source = statusMap.get(title);
 
-    if (typeof result === `undefined`)
-      result = null;
+    const casted = typeof source !== `undefined`
+      ? source
+      : {href: undefined, ok: null};
 
-    return [title, result];
+    return [title, casted];
   }));
 };
