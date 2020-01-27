@@ -4,7 +4,7 @@ Chenille is a merge queue system based on GitHub actions (although quite loosely
 
 > **Practical case:** Imagine you have a PR that adds an ESLint rule to your project, and another PR that happen to contain code that violate the rule. Both PR will be green against master, and it's only once you merge them both that you'll see that master broke. To fix that you could enable "Require branches to be up-to-date before merging" in the GitHub settings, but it's not possible when working with many committers as your PRs would always end up being rebased again and again.
 
-It's very similar to [Ship-it](https://github.com/Shopify/shipit-engine) or [Bors](https://github.com/bors-ng/bors-ng), but the integration with GitHub is extremely simple (in particular you don't need to setup any server, as Chenille is stateless).
+It's very similar to [Ship-it](https://github.com/Shopify/shipit-engine) or [Bors](https://bors.tech/essay/2017/02/02/pitch/), but the integration with GitHub is extremely simple (in particular you don't need to setup any server, as Chenille is stateless).
 
 ## Install
 
